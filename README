@@ -1,1 +1,2 @@
-AirKey is a central management platform using  Lighttpd, PHP, SQLite, and CodeIgniter to manage an OpenWRT based access point.
+AirKey is a central management platform for wireless access points. It uses CrossLight (http://code.google.com/p/crosslight/) to manage OpenWRT based access points.
+

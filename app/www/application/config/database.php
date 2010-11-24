@@ -37,10 +37,10 @@
 $active_group = "default";
 $active_record = TRUE;
 
-$db['default']['hostname'] = "";
-$db['default']['username'] = "";
+$db['default']['hostname'] = "localhost";
+$db['default']['username'] = "root";
 $db['default']['password'] = "";
-$db['default']['database'] = APPPATH."sample.db";
+$db['default']['database'] = APPPATH."airkey.db";
 $db['default']['dbdriver'] = "sqlite3";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = FALSE;

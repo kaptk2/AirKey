@@ -5,7 +5,7 @@ class Manage_model extends Model
 {
   function showAllAP()
   {
-    $query =  $this->db->get('apList');
+    $query =  $this->db->getwhere('apList',array('isActive'=>0));
     return $query->result();
   }
 }

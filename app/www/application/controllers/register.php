@@ -13,7 +13,7 @@ class Register extends Controller
 
   function index()
   {
-    $this->load->view('v_error');
+    $this->load->view('registerError_view');
   }
 
   function auth($mac = '', $key = '')
@@ -37,7 +37,7 @@ class Register extends Controller
         else
         {
           // Invalid Credinatls passed
-          $this->load->view('v_error');
+          $this->load->view('registerError_view');
         }
       }
       else
@@ -50,14 +50,14 @@ class Register extends Controller
         }
         else
         {
-          $this->load->view('v_error');
+          $this->load->view('registerError_view');
         }
       }
     }
     else
     {
       // MAC and Key were not passed error out
-      $this->load->view('v_error');
+      $this->load->view('registerError_view');
     }
   }
 }

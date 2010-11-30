@@ -41,6 +41,7 @@ case "$1" in
             then echo "CrossLight is running, stop first before running in debug mode"
             else
               echo "rootdir = \"$ROOTDIR\"" > $ROOTDIR/etc/lighttpd.conf.local
+              echo "include \"lighttpd.debug.conf\"" >> $ROOTDIR/etc/lighttpd.conf.local
               $ROOTDIR/bin/lighttpd -D -f $ROOTDIR/etc/lighttpd.conf -m ./bin/lib/
           fi
         ;;

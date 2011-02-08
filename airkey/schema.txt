@@ -1,0 +1,40 @@
+TABLE LAYOUT
+------------------------------
+
+CREATE TABLE apList(
+  id INTEGER PRIMARY KEY,
+  name varchar(255),
+  mac varchar(17),
+  key varchar(255),
+  groupName varchar(255) DEFAULT 'default',
+  isActive tinyint DEFAULT 0
+);
+
+
+CREATE TABLE config(
+  id INTEGER PRIMARY KEY,
+  mac varchar(17),
+  currentVersion varchar(255),
+  modules varchar (255),
+  run varchar(255),
+  FOREIGN KEY(mac) REFERENCES apList(mac) ON DELETE CASCADE
+);
+
+CREATE TABLE heartbeat (
+  id INTEGER PRIMARY KEY,
+  mac varchar(17),
+  uptime varchar(255),
+  version varchar(255),
+  tStamp varchar(255),
+  FOREIGN KEY(mac) REFERENCES apList(mac) ON DELETE CASCADE
+);
+
+CREATE TABLE moduleList(
+  id INTEGER PRIMARY KEY,
+  mac varchar(17),
+  moduleName varchar(255),
+  packageName varchar(255),
+  remoteFile varchar(255),
+  localFile varchar(255),
+  command varchar(255)
+);

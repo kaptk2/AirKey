@@ -1,0 +1,3 @@
+var_mac=00:21:9B:3D:65:7A
+var_key='secret1'
+var_version='1'

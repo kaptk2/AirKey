@@ -1,15 +1,10 @@
 <?php
 
-class Register extends Controller
+class Register extends CI_Controller
 {
 
   var $mac;
   var $key;
-
-  function Register()
-  {
-    parent::Controller();
-  }
 
   function index()
   {

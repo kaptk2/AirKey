@@ -1,13 +1,8 @@
 <?php
-  class Network extends Controller
+  class Network extends CI_Controller
   {
     var $mac;
     var $key;
-
-    function Network()
-    {
-      parent::Controller();
-    }
 
     function index()
     {
@@ -56,10 +51,10 @@
           $update = array (
           'mac' => $groupMember,
           'moduleName' => "network",
-          'packageName' => $this->input->xss_clean($this->input->post('packageName')),
-          'remoteFile' => $this->input->xss_clean($this->input->post('remoteFile')),
-          'localFile' => $this->input->xss_clean($this->input->post('localFile')),
-          'command' => $this->input->xss_clean($this->input->post('command'))
+          'packageName' => $this->security->xss_clean($this->input->post('packageName')),
+          'remoteFile' => $this->security->xss_clean($this->input->post('remoteFile')),
+          'localFile' => $this->security->xss_clean($this->input->post('localFile')),
+          'command' => $this->security->xss_clean($this->input->post('command'))
         );
         $this->modules_model->changeConfig($update);
         }
@@ -103,12 +98,12 @@
         if ($this->input->post('applyType') == "mac")
         {
           $update = array (
-            'mac' => $this->input->xss_clean($this->input->post('applyTo')),
+            'mac' => $this->security->xss_clean($this->input->post('applyTo')),
             'moduleName' => "network",
-            'packageName' => $this->input->xss_clean($this->input->post('packageName')),
-            'remoteFile' => $this->input->xss_clean($this->input->post('remoteFile')),
-            'localFile' => $this->input->xss_clean($this->input->post('localFile')),
-            'command' => $this->input->xss_clean($this->input->post('command'))
+            'packageName' => $this->security->xss_clean($this->input->post('packageName')),
+            'remoteFile' => $this->security->xss_clean($this->input->post('remoteFile')),
+            'localFile' => $this->security->xss_clean($this->input->post('localFile')),
+            'command' => $this->security->xss_clean($this->input->post('command'))
           );
           $this->modules_model->removeGroup($this->input->post('applyTo')); // make sure group is blank
           $this->modules_model->changeConfig($update);
@@ -125,10 +120,10 @@
             $update = array (
             'mac' => $groupMember,
             'moduleName' => "network",
-            'packageName' => $this->input->xss_clean($this->input->post('packageName')),
-            'remoteFile' => $this->input->xss_clean($this->input->post('remoteFile')),
-            'localFile' => $this->input->xss_clean($this->input->post('localFile')),
-            'command' => $this->input->xss_clean($this->input->post('command'))
+            'packageName' => $this->security->xss_clean($this->input->post('packageName')),
+            'remoteFile' => $this->security->xss_clean($this->input->post('remoteFile')),
+            'localFile' => $this->security->xss_clean($this->input->post('localFile')),
+            'command' => $this->security->xss_clean($this->input->post('command'))
           );
           $this->modules_model->changeConfig($update);
           }
@@ -149,7 +144,7 @@
         if ($this->input->post('applyType') == "mac")
         {
           $mac = array (
-            'mac' => $this->input->xss_clean($this->input->post('applyTo')),
+            'mac' => $this->security->xss_clean($this->input->post('applyTo')),
             'moduleName' => "network"
           );
           $data = $this->modules_model->getConfig($mac);

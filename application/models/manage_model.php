@@ -1,5 +1,5 @@
 <?php
-class Manage_model extends Model
+class Manage_model extends CI_Model
 {
 
   function activeAP()
@@ -27,7 +27,7 @@ class Manage_model extends Model
 
   function showPendingAP()
   {
-    $pending =  $this->db->getwhere('apList',array('isActive'=>0));
+    $pending =  $this->db->get_where('apList',array('isActive'=>0));
     return $pending->result();
   }
 
@@ -71,11 +71,15 @@ class Manage_model extends Model
     $this->db->select('mac');
     $query = $this->db->get_where('apList',array('groupName' => $groupName));
 
-    foreach ($query->result() as $row)
+    if ($query->num_rows() > 0)
     {
-      $data[] = $row->mac;
+      foreach ($query->result() as $row)
+      {
+        $data[] = $row->mac;
+      }
+      return $data;
     }
-    return $data;
+    return false;
   }
 
   function changeGroup($mac, $groupName)

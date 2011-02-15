@@ -39,7 +39,7 @@
       echo form_input('remoteFile',$remoteFile);
     else
       echo form_input('remoteFile');
-    echo ' <a href="'.base_url().'fileEditor/'.$moduleName.'">Edit files</a>';
+    echo ' <a href="'.base_url().'fileEditor/edit/'.$moduleName.'">Edit files</a>';
     echo "<br />";
 
     echo "Commands to run: ";

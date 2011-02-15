@@ -1,13 +1,8 @@
 <?php
-  class HeartBeat extends Controller
+  class HeartBeat extends CI_Controller
   {
     var $mac;
     var $key;
-
-    function HeartBeat()
-    {
-      parent::Controller();
-    }
 
     function index()
     {

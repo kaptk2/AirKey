@@ -1,5 +1,5 @@
 <?php
-  class Manage extends Controller
+  class Manage extends CI_Controller
   {
     function index()
     {
@@ -27,13 +27,13 @@
 
         foreach ($this->input->post('approve') as $mac) //Activate the AP in the database
         {
-          $mac = $this->input->xss_clean($mac);
+          $mac = $this->security->xss_clean($mac);
           $this->manage_model->approveAP($mac);
         }
 
         foreach ($this->input->post('delete') as $mac) //Delete the AP in the database
         {
-          $mac = $this->input->xss_clean($mac);
+          $mac = $this->security->xss_clean($mac);
           $this->manage_model->deleteAP($mac);
         }
       }
@@ -48,13 +48,13 @@
 
         foreach ($this->input->post('deactivate') as $mac) //Deactivate the AP in the database
         {
-          $mac = $this->input->xss_clean($mac);
+          $mac = $this->security->xss_clean($mac);
           $this->manage_model->deactivateAP($mac);
         }
 
         foreach ($this->input->post('delete') as $mac) //Delete the AP in the database
         {
-          $mac = $this->input->xss_clean($mac);
+          $mac = $this->security->xss_clean($mac);
           $this->manage_model->deleteAP($mac);
         }
       }

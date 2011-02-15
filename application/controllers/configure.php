@@ -1,5 +1,5 @@
 <?php
-  class Configure extends Controller
+  class Configure extends CI_Controller
   {
     function index()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class Heartbeat_model extends Model
+class Heartbeat_model extends CI_Model
 {
 
   function heartbeat($data)

@@ -1,6 +1,6 @@
 <?php
 
-class Register_model extends Model
+class Register_model extends CI_Model
 {
 
   function validateMAC($mac)
@@ -17,7 +17,7 @@ class Register_model extends Model
   {
     $newAPInsert = array(
       'mac' => $mac,
-      'key' => md5($key),
+      'ap_key' => md5($key),
       'isActive' => '0'
     );
     $insert = $this->db->insert('apList', $newAPInsert);
@@ -37,8 +37,12 @@ class Register_model extends Model
     }
     $this->db->select('currentVersion');
     $query = $this->db->get_where('config',array('mac' => 'default'));
-    $row = $query->row();
-    return $row->currentVersion;
+    if ($query->num_rows() > 0)
+    {
+      $row = $query->row();
+      return $row->currentVersion;
+    }
+    return 0;
   }
 }
 ?>

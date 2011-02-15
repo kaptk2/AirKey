@@ -1,13 +1,8 @@
 <?php
-  class MainConfig extends Controller
+  class MainConfig extends CI_Controller
   {
     var $mac;
     var $key;
-
-    function MainConfig()
-    {
-      parent::Controller();
-    }
 
     function index()
     {
@@ -53,6 +48,7 @@
             }
           }
           else
+            # Not a valid username or password
             $this->load->view('registerError_view');
       }
       else
@@ -75,9 +71,9 @@
         {
           $update = array (
           'mac' => $groupMember,
-          'currentVersion' => $this->input->xss_clean($this->input->post('currentVersion')),
-          'modules' => $this->input->xss_clean($this->input->post('modules')),
-          'run' => $this->input->xss_clean($this->input->post('run'))
+          'currentVersion' => $this->security->xss_clean($this->input->post('currentVersion')),
+          'modules' => $this->security->xss_clean($this->input->post('modules')),
+          'run' => $this->security->xss_clean($this->input->post('run'))
         );
         $this->mainconfig_model->changeConfig($update);
         }

@@ -1,6 +1,6 @@
 <?php
 
-class Mainconfig_model extends Model
+class Mainconfig_model extends CI_Model
 {
 
   function getMainConfig($mac)

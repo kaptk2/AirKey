@@ -45,7 +45,7 @@ case "$1" in
           if [ -e "$DIRECTORY/config.txt" ]
             then
               source $DIRECTORY/config.txt
-              curl -L -s -o /tmp/encrypted -d "uptime=$local_uptime" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
+              curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
               openssl aes-128-cbc -a -d -salt -kfile /etc/airkey/network.key -in /tmp/encrypted -out /tmp/checkin
               rm -f /tmp/encrypted
               source /tmp/checkin
@@ -53,7 +53,7 @@ case "$1" in
               if [ -n "$var_run" ]
                 then
                   $var_run
-                  curl -L -s $CONTROLLER/register/auth/$var_mac/$var_key/removeCommand
+                  curl -k -L -s $CONTROLLER/register/auth/$var_mac/$var_key/removeCommand
               fi
               # Check Version and decide what to do next
               if [ $var_version \< $var_server_version ]
@@ -62,7 +62,7 @@ case "$1" in
                 for module in $var_modules #Array of modules
                 do
                   # Get module config file
-                  curl -s -o /tmp/$module $CONTROLLER/modules/$module/auth/$var_mac/$var_key
+                  curl -k -s -o /tmp/$module $CONTROLLER/modules/$module/auth/$var_mac/$var_key
                   source /tmp/$module # Use the variables provided in the module defination file
 
                   if [ -n "$var_package" ] #If the package variable exists make sure it is installed
@@ -89,7 +89,7 @@ case "$1" in
                       # Get files
                       location="`echo $var_local_files | awk -v i=$i '{print $i}'`" # Array of where files go on local FS
                       # TODO make wget file from login secured location
-                      wget -O $location $CONTROLLER/static/modules/$module/$file
+                      wget --no-check-certificate -O $location $CONTROLLER/static/modules/$module/$file
                       i=`expr $i + 1`
                       done
                   fi

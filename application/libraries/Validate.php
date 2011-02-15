@@ -10,7 +10,7 @@ class Validate {
     $CI->load->database();
 
     $CI->db->where('mac', $mac);
-    $CI->db->where('key', md5($key));
+    $CI->db->where('ap_key', md5($key));
     $CI->db->where('isActive', 1);
     $query = $CI->db->get('apList');
     if($query->num_rows == 1)

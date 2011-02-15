@@ -1,6 +1,6 @@
 <?php
 
-class Modules_model extends Model
+class Modules_model extends CI_Model
 {
   function getConfig($data)
   {
@@ -78,6 +78,7 @@ class Modules_model extends Model
     }
     else
       return false;
+      echo "I did it"; //DEBUG
     return true; //Everything worked return true
   }
 

@@ -5,7 +5,7 @@ CREATE TABLE apList(
   id INTEGER PRIMARY KEY,
   name varchar(255),
   mac varchar(17),
-  key varchar(255),
+  ap_key varchar(255),
   groupName varchar(255) DEFAULT 'default',
   isActive tinyint DEFAULT 0
 );

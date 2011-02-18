@@ -101,7 +101,28 @@
           <h1>Network Overview</h1>
           <table border="1" align="center" width="50%">
             <tr><th align="center">Total AP's</th><th align="center">AP's with Problems</th><th align="center">Pending Commands</th></tr>
-            <tr><td align="center"><?php echo $activeAP; ?></td><td align="center">TODO</td><td align="center"><?php echo $pendingCmd; ?></td></tr>
+            <tr>
+              <td align="center"><?php echo $activeAP; ?></td>
+              <td align="center">
+                <?php 
+                  $ds = count($dangers);
+
+                  if($ds)
+                  {
+                    echo "<ul>\n";
+                    foreach($dangers as $danger)
+                    {
+                      $name = empty($danger->name)?$danger->mac:$danger->name;
+                      echo "\t<li>{$name}</li>\n";
+                    }
+                    echo "</ul>\n";
+                  }
+                  else
+                    echo "None";
+                ?>
+</td>
+              <td align="center"><?php echo $pendingCmd; ?></td>
+            </tr>
           </table>
           <br />
           <p><strong>Search for AP:</strong> <input type="text" size="20" /><input type="submit" value="Search" /></p>
@@ -121,9 +142,9 @@
                 print '<tr>';
                 print '<td>'.$row->mac.'</td>';
                 if(!empty($row->name))
-                  print '<td align="center" id="nameRow"><a id="nameLink" href="./configure/configAP/'.$row->mac.'">'.$row->name.'</td>';
+                  print '<td align="center" id="nameRow"><a id="nameLink" href="'.site_url("configure/configAP/{$row->mac}").'">'.$row->name.'</td>';
                 else
-                  print '<td align="center" id="nameRow"><a id="nameLink" href="./configure/configAP/'.$row->mac.'">Add</a></td>';
+                  print '<td align="center" id="nameRow"><a id="nameLink" href="'.site_url("configure/configAP/{$row->mac}").'">Add</a></td>';
                 print '<td>'.$row->groupName.'</td>';
                 print '<td align="center"><input type="checkbox" name="deactivate[]" value="'.$row->mac.'"></td>';
                 print '<td align="center"><input type="checkbox" name="delete[]" value="'.$row->mac.'"></td>';

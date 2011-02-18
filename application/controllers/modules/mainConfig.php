@@ -38,7 +38,9 @@
 
             if ( ! write_file($file, $encryptThis))
             {
-              $this->load->view('registerError_view');
+              // File can be written
+              echo "opps no file";
+              //$this->load->view('registerError_view');
             }
             else
             {
@@ -48,11 +50,12 @@
             }
           }
           else
-            # Not a valid username or password
-            $this->load->view('registerError_view');
+            // Not a valid username or password
+            echo "invalid username";
+            //$this->load->view('registerError_view');
       }
       else
-        $this->load->view('registerError_view');
+        $this->load->view('registerError_view'); // MAC or Key not passed
     }
 
     function editDefaults()

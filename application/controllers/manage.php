@@ -8,6 +8,7 @@
       $this->load->model('manage_model');
       $data['pending'] = $this->manage_model->showPendingAP();
       $data['active'] = $this->manage_model->showActiveAP();
+      $data['dangers'] = $this->manage_model->apHealth();
       
       $data['activeAP'] = $this->manage_model->activeAP();
       $data['pendingCmd'] = $this->manage_model->pendingCmd();

@@ -64,6 +64,7 @@ class Register extends CI_Controller
         }
         else
         {
+          // Invalid MAC address
           $this->load->view('registerError_view');
         }
       }

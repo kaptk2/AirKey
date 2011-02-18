@@ -27,7 +27,7 @@
 
       if ($_POST) //make form submitted
       {
-        $name = $this->input->xss_clean($this->input->post('APname'));
+        $name = $this->security->xss_clean($this->input->post('APname'));
         $name = str_replace(' ','',$name); //Remove spaces
         $this->manage_model->changeName($mac, $name);
       }
@@ -42,7 +42,7 @@
 
       if ($_POST) //make sure that data has been posted
       {
-        $groupName = $this->input->xss_clean($this->input->post('groupName'));
+        $groupName = $this->security->xss_clean($this->input->post('groupName'));
 
         switch($this->input->post('actionDropDown'))
         {

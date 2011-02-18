@@ -21,8 +21,16 @@ class Manage_model extends CI_Model
   
   function apHealth()
   {
-    //TODO
-    return true;
+    $timestamp = strtotime("5 minutes ago");
+    $sql = "SELECT mac, name FROM apList WHERE mac IN (SELECT mac FROM apList WHERE NOT EXISTS (SELECT mac FROM heartbeat WHERE heartbeat.tStamp > {$timestamp}))";
+    $query = $this->db->query($sql);
+
+    $dangers = array();
+    foreach ($query->result() as $row)
+    {
+      $dangers[] = $row;
+    }
+    return $dangers;
   }
 
   function showPendingAP()

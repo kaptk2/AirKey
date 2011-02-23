@@ -1,2 +1,9 @@
 AirKey is a central management platform for wireless access points. It uses CrossLight (http://code.google.com/p/crosslight/) to manage OpenWRT based access points.
 
+AirKey 2.0
+======================================================
+Features include:
+	* 100% graceful degration if JavaScript is not enabled
+	* New web interface, better mobile support
+	* Javascipt now all in files rather than inline
+

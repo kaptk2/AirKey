@@ -37,9 +37,9 @@
     function editDefaults()
     {
       $this->load->model('modules/modules_model');
-      $this->load->model('manage_model');
+      $this->load->model('apList_model');
 
-      $groupMembers = $this->manage_model->getGroup('default');
+      $groupMembers = $this->apList_model->getGroup('default');
       $groupMembers[] .= 'default';
       $mac = reset($groupMembers); // MAC of first group member
       $data = $this->modules_model->getConfig($mac);
@@ -111,9 +111,9 @@
         else
         {
           // Group Selected
-          $this->load->model('manage_model');
+          $this->load->model('apList_model');
           $groupName = $this->input->post('applyTo');
-          $groupMembers = $this->manage_model->getGroup($groupName);
+          $groupMembers = $this->apList_model->getGroup($groupName);
 
           foreach($groupMembers as $groupMember)
           {
@@ -152,9 +152,9 @@
         }
         else //Group Selected
         {
-          $this->load->model('manage_model');
+          $this->load->model('apList_model');
           $groupName = $this->input->post('applyTo');
-          $groupMembers = $this->manage_model->getGroup($groupName);
+          $groupMembers = $this->apList_model->getGroup($groupName);
           $mac = array (
             'mac' => reset($groupMembers), // MAC of first group member
             'moduleName' => "network"

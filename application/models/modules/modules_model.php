@@ -78,7 +78,6 @@ class Modules_model extends CI_Model
     }
     else
       return false;
-      echo "I did it"; //DEBUG
     return true; //Everything worked return true
   }
 

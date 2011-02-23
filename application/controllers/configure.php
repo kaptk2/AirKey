@@ -6,12 +6,12 @@
       $this->load->helper('directory');
 
       $this->load->view('header_view');
-      $this->load->model('manage_model');
+      $this->load->model('apList_model');
 
       $data['modules'] = directory_map('./application/controllers/modules/', TRUE);
 
-      $data['pending'] = $this->manage_model->showPendingAP();
-      $data['active'] = $this->manage_model->showActiveAP();
+      $data['pending'] = $this->apList_model->showPendingAP();
+      $data['active'] = $this->apList_model->showActiveAP();
       $this->load->view('configure_view', $data);
       $this->load->view('footer_view');
     }
@@ -23,22 +23,22 @@
 
     function configAP($mac)
     {
-      $this->load->model('manage_model');
+      $this->load->model('apList_model');
 
       if ($_POST) //make form submitted
       {
         $name = $this->security->xss_clean($this->input->post('APname'));
         $name = str_replace(' ','',$name); //Remove spaces
-        $this->manage_model->changeName($mac, $name);
+        $this->apList_model->changeName($mac, $name);
       }
 
-      $data = $this->manage_model->showAP($mac);
+      $data = $this->apList_model->showAP($mac);
       $this->load->view('showAP_view', $data);
     }
 
     function group()
     {
-      $this->load->model('manage_model');
+      $this->load->model('apList_model');
 
       if ($_POST) //make sure that data has been posted
       {
@@ -51,7 +51,7 @@
             // Create a new group
             foreach ($this->input->post('mac') as $mac)
             {
-              $this->manage_model->changeGroup($mac, $groupName);
+              $this->apList_model->changeGroup($mac, $groupName);
             }
           break;
 

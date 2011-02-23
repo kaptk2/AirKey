@@ -5,13 +5,13 @@
     {
       $this->load->view('header_view');
 
-      $this->load->model('manage_model');
-      $data['pending'] = $this->manage_model->showPendingAP();
-      $data['active'] = $this->manage_model->showActiveAP();
-      $data['dangers'] = $this->manage_model->apHealth();
+      $this->load->model('apList_model');
+      $data['pending'] = $this->apList_model->showPendingAP();
+      $data['active'] = $this->apList_model->showActiveAP();
+      $data['dangers'] = $this->apList_model->apHealth();
       
-      $data['activeAP'] = $this->manage_model->activeAP();
-      $data['pendingCmd'] = $this->manage_model->pendingCmd();
+      $data['activeAP'] = $this->apList_model->activeAP();
+      $data['pendingCmd'] = $this->apList_model->pendingCmd();
 
       $this->load->model('heartbeat_model');
       $data['heartbeat'] = $this->heartbeat_model->showLog();
@@ -24,18 +24,18 @@
     {
       if ($_POST) //make sure that data has been posted
       {
-        $this->load->model('manage_model');
+        $this->load->model('apList_model');
 
         foreach ($this->input->post('approve') as $mac) //Activate the AP in the database
         {
           $mac = $this->security->xss_clean($mac);
-          $this->manage_model->approveAP($mac);
+          $this->apList_model->approveAP($mac);
         }
 
         foreach ($this->input->post('delete') as $mac) //Delete the AP in the database
         {
           $mac = $this->security->xss_clean($mac);
-          $this->manage_model->deleteAP($mac);
+          $this->apList_model->deleteAP($mac);
         }
       }
       redirect('manage');
@@ -45,18 +45,18 @@
     {
       if ($_POST) //make sure that data has been posted
       {
-        $this->load->model('manage_model');
+        $this->load->model('apList_model');
 
         foreach ($this->input->post('deactivate') as $mac) //Deactivate the AP in the database
         {
           $mac = $this->security->xss_clean($mac);
-          $this->manage_model->deactivateAP($mac);
+          $this->apList_model->deactivateAP($mac);
         }
 
         foreach ($this->input->post('delete') as $mac) //Delete the AP in the database
         {
           $mac = $this->security->xss_clean($mac);
-          $this->manage_model->deleteAP($mac);
+          $this->apList_model->deleteAP($mac);
         }
       }
       redirect('manage');

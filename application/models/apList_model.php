@@ -1,5 +1,5 @@
 <?php
-class Manage_model extends CI_Model
+class apList_model extends CI_Model
 {
 
   function activeAP()

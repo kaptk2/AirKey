@@ -24,7 +24,27 @@ URL: <input type="text" name="controller" value="<?php echo $controller; ?>" siz
 
 		//Build the URL
 		$url = $controller.'/'.'register/auth/'.$mac.'/'.$key.'/'.$version;
-		header("Location: $url");
+		
+		echo "The url is: $url <br />";
+		echo 'You can decode the url using <a href="decode_output.php?url='.$url.'">decode_output.php</a>';
+
+		$ch = curl_init($url);
+		// ignore invalid ssl
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST , false);
+		// follow redirects
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		// misc options
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// run curl
+		$output = curl_exec($ch);
+		curl_close($ch);
+
+		echo "<p>Outputed text:</p>";
+		echo "<pre>";
+		echo $output;
+		echo "</pre>";
 	}
 ?>
 

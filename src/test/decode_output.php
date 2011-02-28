@@ -1,11 +1,15 @@
 <?php 
 	//Default Variable
 	$key = "1234";
+	if (isset($_GET["url"]))
+		$url = $_GET["url"];
+	else
+		$url = '';
 ?>
 
 <form name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 Key: <input type="text" name="key" value="<?php echo $key; ?>" /><br/>
-URL: <input type="text" name="url" />
+URL: <input type="text" name="url" value="<?php echo $url; ?>" size="90" />
 		 <br />
 		 <input type="submit" name="submit" value="Submit Form"><br>
 </form>

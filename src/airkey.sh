@@ -88,8 +88,8 @@ case "$1" in
                       do
                       # Get files
                       location="`echo $var_local_files | awk -v i=$i '{print $i}'`" # Array of where files go on local FS
-                      # TODO make wget file from login secured location
-                      wget -O $location $CONTROLLER/static/modules/$module/$file
+                      # wget file from login password secured location
+                      wget --user=`echo $var_mac | sed s/://g` --password=$var_key -O $location $CONTROLLER/static/modules/$module/$file
                       i=`expr $i + 1`
                       done
                   fi

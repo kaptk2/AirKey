@@ -58,7 +58,18 @@ Notes:
 	}
 
 // Settings
-	$save_path = getcwd() . "/uploads/";	// The path were we will save the file
+	if (isset($_POST["path"]))
+	{
+		$save_path = getcwd() . "/modules/" . $_POST["path"] . "/"; // The path were we will save the file
+		//$save_path = getcwd() . "/" . $_POST['path'] . "/";
+	}
+	else
+	{
+		HandleError("No Path Given, can not continue");
+		exit(0);
+	}
+	
+	//$save_path = getcwd() . "/uploads/";
 	$upload_name = "Filedata";
 	$max_file_size_in_bytes = 2147483647;				// 2GB in bytes
 	$extension_whitelist = array("txt", "bin", "sh");	// Allowed file extensions

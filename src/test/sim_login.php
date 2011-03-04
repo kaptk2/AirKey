@@ -1,6 +1,6 @@
 <?php 
 	//Default Variables
-	$controller = "https://andrew.rimrockhosting.com";
+	$controller = "http://andrew.rimrockhosting.com";
 	$mac = "08:00:27:EA:16:04";
 	$key = "zNPIWnQy7K8OY4Q4X2Whu5AwnxU5e6zg";
 	$version = "1";

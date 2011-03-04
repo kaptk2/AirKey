@@ -1,10 +1,11 @@
 TABLE LAYOUT
 ------------------------------
 
-CREATE TABLE apList(
+CREATE TABLE apList1(
   id INTEGER PRIMARY KEY,
   name varchar(255),
   mac varchar(17),
+  user_name varchar(13),
   ap_key varchar(255),
   groupName varchar(255) DEFAULT 'default',
   isActive tinyint DEFAULT 0

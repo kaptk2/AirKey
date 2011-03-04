@@ -6,7 +6,7 @@
 
 # The URL of the airKey controller
 # Change this to fit your install
-CONTROLLER="http://mud.rocky.edu:3000/airkey" #No trailing slash
+CONTROLLER="http://andrew.rimrockhosting.com" #No trailing slash
 
 # Get Current Directory
 DIRECTORY="/etc/airkey" #No trailing slash
@@ -27,6 +27,13 @@ case "$1" in
               echo "var_version='0'" >> $DIRECTORY/config.txt
             else echo "The file: $DIRECTORY/config.txt already exists please remove and run init again"
           fi
+          # Create a Network Key if needed
+          if [ ! -e "$DIRECTORY/network.key" ]
+            then
+              echo -n "Please Enter your network key: "
+              read network_key
+              echo $network_key >> $DIRECTORY/network.key
+          fi
         ;;
 
         force)
@@ -46,7 +53,7 @@ case "$1" in
             then
               source $DIRECTORY/config.txt
               curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
-              openssl aes-128-cbc -a -d -salt -kfile /etc/airkey/network.key -in /tmp/encrypted -out /tmp/checkin
+              openssl aes-128-cbc -a -d -salt -kfile $DIRECTORY/network.key -in /tmp/encrypted -out /tmp/checkin
               rm -f /tmp/encrypted
               source /tmp/checkin
               # Run any commands if listed

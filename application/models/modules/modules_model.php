@@ -46,9 +46,9 @@ class Modules_model extends CI_Model
 
 	function changeConfig($update)
 	{
-		$query = $this->db->get_where('apList',array('mac'=>$update['mac']));
+		$query = $this->db->get_where('ap',array('mac'=>$update['mac']));
 
-		if($query->num_rows > 0 || $update['mac'] == 'default') // AP exists in apList or is the default entry
+		if($query->num_rows > 0 || $update['mac'] == 'default') // AP exists in ap or is the default entry
 		{
 			$query = $this->db->get_where('moduleList',array('mac'=>$update['mac'], 'moduleName'=>$update['moduleName']));
 
@@ -97,7 +97,7 @@ class Modules_model extends CI_Model
 	{
 		$this->db->where('mac', $mac);
 		$data = array('groupName' => '');
-		$this->db->update('apList', $data);
+		$this->db->update('ap', $data);
 	}
 }
 ?>

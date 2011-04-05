@@ -6,7 +6,8 @@
 
 		function index()
 		{
-			$this->load->view('registerError_view');
+			$data['error_msg'] = "Registration Error";
+			$this->load->view('error_view', $data);
 		}
 
 		function process()
@@ -25,7 +26,8 @@
 						return true;
 					}
 			}
-			$this->load->view('registerError_view');
+			$data['error_msg'] = "Not Authorized";
+			$this->load->view('error_view', $data);
 		}
 
 	}

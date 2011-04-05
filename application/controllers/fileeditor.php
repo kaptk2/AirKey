@@ -36,7 +36,8 @@
 
 				//Attempt to save the file
 				if( ! write_file($_SERVER['DOCUMENT_ROOT'] . "/static/modules/$filePath/$fileName", $filedata))
-					echo "ERROR WRITING FILE"; // TODO make this tell the view there was an error
+					$data['error_msg'] = "Error writting files";
+					$this->load->view('error_view', $data);
 				else
 					$this->load->view('success_view');
 			}

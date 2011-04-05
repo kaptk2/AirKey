@@ -6,7 +6,8 @@
 
 		function index()
 		{
-			$this->load->view('registerError_view');
+			$data['error_msg'] = "Registration Error";
+			$this->load->view('error_view', $data);
 		}
 
 		function auth($mac = '', $key = '')
@@ -28,10 +29,18 @@
 						$this->load->view('modules/module_view', $config);
 					}
 					else
-						$this->load->view('registerError_view');
+					{
+						// a valid MAC or Key was not given
+						$data['error_msg'] = "Invalid MAC or Key";
+						$this->load->view('error_view', $data);
+					}
 			}
 			else
-				$this->load->view('registerError_view');
+			{
+				// mac or key not passed
+				$data['error_msg'] = "MAC or Key missing";
+				$this->load->view('error_view', $data);
+			}
 		}
 
 		function editDefaults()

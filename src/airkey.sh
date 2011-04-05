@@ -20,7 +20,7 @@ case "$1" in
           if [ ! -e "$DIRECTORY/config.txt" ]
             then
               # MAC address
-              echo "var_mac=`/sbin/ifconfig eth0 | grep "HWaddr" | awk '{ print $5 }'`" > $DIRECTORY/config.txt
+              echo "var_mac=`/sbin/ifconfig eth0 | grep "HWaddr" | awk '{ print $5 }' | sed "s/://g"`" > $DIRECTORY/config.txt
               echo -n "var_key='" >> $DIRECTORY/config.txt
               tr -dc A-Za-z0-9 < /dev/urandom | head -c 32 >> $DIRECTORY/config.txt
               echo "'" >> $DIRECTORY/config.txt
@@ -52,7 +52,7 @@ case "$1" in
           if [ -e "$DIRECTORY/config.txt" ]
             then
               source $DIRECTORY/config.txt
-              curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
+              curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime&ap_version=$var_version" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
               openssl aes-128-cbc -a -d -salt -kfile $DIRECTORY/network.key -in /tmp/encrypted -out /tmp/checkin
               rm -f /tmp/encrypted
               source /tmp/checkin

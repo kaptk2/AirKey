@@ -11,8 +11,8 @@ class Validate {
 
 		$CI->db->where('mac', $mac);
 		$CI->db->where('ap_key', md5($key));
-		$CI->db->where('isActive', 1);
-		$query = $CI->db->get('apList');
+		$CI->db->where('is_active', 1);
+		$query = $CI->db->get('ap');
 		if($query->num_rows == 1)
 		{
 			return true;

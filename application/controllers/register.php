@@ -8,20 +8,19 @@ class Register extends CI_Controller
 
 	function index()
 	{
-		$this->load->view('registerError_view');
+		$data['error_msg'] = "Registration Error";
+		$this->load->view('error_view', $data);
 	}
 
 	function auth($mac = '', $key = '', $version = '')
 	{
-		if ($mac && $key)
+		if ($mac && $key) //Both $mac and $key are required if not show error message
 		{
 			//Get AP Credentials from database
-			$this->load->model('config_model');
-			$this->load->model('aplist_model');
+			$this->load->model('ap_model');
+			$validMAC = $this->ap_model->validateMAC($mac);
 
-			$validMAC = $this->aplist_model->validateMAC($mac);
-			$versionNumber = $this->config_model->getVersion($mac);
-
+			//Test to see if a valid user name and password were passed
 			$this->load->library('Validate');
 			$validUser = $this->validate->validateUser($mac, $key);
 
@@ -30,14 +29,13 @@ class Register extends CI_Controller
 				if($validUser)
 				{
 					//Get Heartbeat Data
-
-					$tStamp = date("Y-m-d H:i:s");
+					$time_stamp = date("Y-m-d H:i:s");
 
 					$data = array(
 						'mac' => $mac,
 						'uptime' => $this->input->post('uptime'),
-						'version' => $version,
-						'tStamp' => $tStamp
+						'ap_version' => $this->input->post('ap_version'),
+						'time_stamp' => $time_stamp
 					);
 
 					if (isset($_POST['uptime']))
@@ -45,36 +43,42 @@ class Register extends CI_Controller
 						$this->load->model('heartbeat_model');
 						$this->heartbeat_model->heartbeat($data);
 					}
+						//All is well display the config file
 						redirect('modules/mainConfig/auth/'.$mac.'/'.$key);
 				}
 				else
 				{
-					// Invalid Credinatls passed
-					$this->load->view('registerError_view');
+					// Invalid credentials passed
+					$data['error_msg'] = "Invalid Credentials";
+					$this->load->view('error_view', $data);
 				}
 			}
 			else
 			{
-				if (preg_match('/^[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}$/i',$mac))
-				{ //Test if it is a real MAC
+				if (preg_match('/^[a-f0-9]{12}$/i',$mac)) //Test if it is a valid username
+				{
 					//The AP is not in database add it to pending table
-					$addAP = $this->aplist_model->insertAP($mac, $key);
-					if ($addAP)
+					$addToAP = $this->ap_model->insertAP($mac, $key);
+
+					if ($addToAP)
 					{
-						$this->load->view('add_view');
+						$data['error_msg'] = "AP does not exist. Adding to pending table";
+						$this->load->view('error_view', $data);
 					}
 				}
 				else
 				{
 					// Invalid MAC address
-					$this->load->view('registerError_view');
+					$data['error_msg'] = "Invalid MAC address";
+					$this->load->view('error_view', $data);
 				}
 			}
 		}
 		else
 		{
 			// MAC and Key were not passed error out
-			$this->load->view('registerError_view');
+			$data['error_msg'] = "MAC or Key not passed";
+			$this->load->view('error_view', $data);
 		}
 	}
 }

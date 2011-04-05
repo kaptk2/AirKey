@@ -6,7 +6,8 @@
 
 		function index()
 		{
-			$this->load->view('registerError_view');
+			$data['error_msg'] = "Registration Error";
+			$this->load->view('error_view', $data);
 		}
 
 		function auth($mac = '', $key = '', $command = '')
@@ -39,23 +40,25 @@
 						if ( ! write_file($file, $encryptThis))
 						{
 							// File can't be written
-							//echo "opps no file"; //DEBUG
-							$this->load->view('registerError_view');
+							$data['error_msg'] = "File can not be written";
+							$this->load->view('error_view', $data);
 						}
 						else
 						{
 							system("./static/scripts/encode.sh $password $file");
-							//DELETE the file
-							//unlink($file);
+							// DELETE the file
+							unlink($file);
 						}
 					}
 					else
-						// Not a valid username or password
-						//echo "invalid username"; //DEBUG
-						$this->load->view('registerError_view');
+					{
+						// Not a valid MAC or key
+						$data['error_msg'] = "Invalid MAC or Key";
+						$this->load->view('error_view', $data);
+					}
 			}
 			else
-				$this->load->view('registerError_view'); // MAC or Key not passed
+				$this->load->view('error_view', "MAC or Key Missing"); // MAC or Key not passed
 		}
 
 		function editDefaults()

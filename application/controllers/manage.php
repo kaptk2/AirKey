@@ -9,10 +9,9 @@
 			$this->load->model('config_model');
 
 			$data['pending'] = $this->aplist_model->showPendingAP();
-			$data['active'] = $this->aplist_model->showActiveAP();
+			$data['activeAP'] = $this->aplist_model->showActiveAP();
 			$data['dangers'] = $this->aplist_model->apHealth();
-			
-			$data['activeAP'] = $this->aplist_model->activeAP();
+
 			$data['pendingCmd'] = $this->config_model->pendingCmd();
 
 			$this->load->model('heartbeat_model');

@@ -1,5 +1,5 @@
 <?php
-	class MainConfig extends CI_Controller
+	class Main_config extends CI_Controller
 	{
 		var $mac;
 		var $key;

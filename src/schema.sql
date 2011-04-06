@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS ap;
 CREATE TABLE ap (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	ap_key VARCHAR(255) NOT NULL UNIQUE,
@@ -6,17 +7,23 @@ CREATE TABLE ap (
 	location TEXT
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS groups;
+CREATE TABLE groups (
+	group_name VARCHAR(255) NOT NULL PRIMARY KEY,
+	group_description TEXT
+) ENGINE=InnoDB;
+# Add default group and description
+INSERT INTO groups (group_name, group_description) VALUES('default', 'default group');
+
+DROP TABLE IF EXISTS associates;
 CREATE TABLE associates (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	group_name VARCHAR(255) NOT NULL,
-	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
+	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE,
+	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE groups (
-	group_name VARCHAR(255) NOT NULL PRIMARY KEY DEFAULT 'default',
-	group_description TEXT
-) ENGINE=InnoDB;
-
+DROP TABLE IF EXISTS administrator;
 CREATE TABLE administrator (
 	user_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	password VARCHAR(255) NOT NULL,
@@ -24,6 +31,7 @@ CREATE TABLE administrator (
 	description TEXT
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS heartbeat;
 CREATE TABLE heartbeat (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	uptime CHAR(10),
@@ -32,12 +40,15 @@ CREATE TABLE heartbeat (
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS module_uses;
 CREATE TABLE module_uses (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	module_name VARCHAR(255) NOT NULL UNIQUE,
-	module_version INT NOT NULL
+	module_version INT NOT NULL,
+	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS module_files;
 CREATE TABLE module_files (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	remote_file VARCHAR(255) NOT NULL,
@@ -45,6 +56,7 @@ CREATE TABLE module_files (
 	FOREIGN KEY (module_name) REFERENCES module_uses(module_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS module_commands;
 CREATE TABLE module_commands (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	command VARCHAR(255),
@@ -52,24 +64,28 @@ CREATE TABLE module_commands (
 	FOREIGN KEY (module_name) REFERENCES module_uses(module_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS configuration;
 CREATE TABLE configuration (
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	mac CHAR(12) NOT NULL PRIMARY KEY,
 	current_version INT NOT NULL DEFAULT 0,
-	run_command VARCHAR(255)
+	run_command VARCHAR(255),
+	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS contains;
 CREATE TABLE contains (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	config_id INT NOT NULL,
+	mac CHAR(12) NOT NULL,
 	module_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (module_name) REFERENCES module_uses(module_name) ON DELETE CASCADE,
-	FOREIGN KEY (config_id) REFERENCES configuration(id) ON DELETE CASCADE
+	FOREIGN KEY (mac) REFERENCES configuration(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS loads;
 CREATE TABLE loads (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	config_id INT NOT NULL,
+	mac CHAR(12) NOT NULL,
 	group_name VARCHAR(255) NOT NULL,
-	FOREIGN KEY (config_id) REFERENCES configuration(id) ON DELETE CASCADE,
+	FOREIGN KEY (mac) REFERENCES configuration(mac) ON DELETE CASCADE,
 	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;

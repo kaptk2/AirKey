@@ -1,4 +1,7 @@
 <?php 
+	// This file allows you to simulate a login to and AirKey Controller.
+	// TODO have the heartbeat data sent
+
 	//Default Variables
 	$controller = "http://andrew.rimrockhosting.com";
 	$mac = "080027EA1604";

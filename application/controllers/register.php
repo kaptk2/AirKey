@@ -44,7 +44,8 @@ class Register extends CI_Controller
 						$this->heartbeat_model->heartbeat($data);
 					}
 						//All is well display the config file
-						redirect('modules/mainConfig/auth/'.$mac.'/'.$key);
+						//redirect('main_config/auth/'.$mac.'/'.$key);
+						echo "hello"; // DEBUG
 				}
 				else
 				{
@@ -63,6 +64,11 @@ class Register extends CI_Controller
 					if ($addToAP)
 					{
 						$data['error_msg'] = "AP does not exist. Adding to pending table";
+						$this->load->view('error_view', $data);
+					}
+					else
+					{
+						$data['error_msg'] = "Error Inserting Data into database";
 						$this->load->view('error_view', $data);
 					}
 				}

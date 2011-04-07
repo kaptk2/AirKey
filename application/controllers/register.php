@@ -20,32 +20,37 @@ class Register extends CI_Controller
 			$this->load->model('ap_model');
 			$validMAC = $this->ap_model->validateMAC($mac);
 
-			//Test to see if a valid user name and password were passed
-			$this->load->library('Validate');
-			$validUser = $this->validate->validateUser($mac, $key);
-
 			if($validMAC) //Check to make sure something is returned
 			{
+				//Test to see if a valid user name and password were passed
+				$this->load->library('Validate');
+				$validUser = $this->validate->validateUser($mac, $key);
+
 				if($validUser)
 				{
-					//Get Heartbeat Data
 					$time_stamp = date("Y-m-d H:i:s");
-
-					$data = array(
-						'mac' => $mac,
-						'uptime' => $this->input->post('uptime'),
-						'ap_version' => $this->input->post('ap_version'),
-						'time_stamp' => $time_stamp
-					);
-
 					if (isset($_POST['uptime']))
 					{
-						$this->load->model('heartbeat_model');
-						$this->heartbeat_model->heartbeat($data);
+						//Get Heartbeat Data
+						$data = array(
+							'mac' => $mac,
+							'uptime' => $this->input->post('uptime'),
+							'ap_version' => $this->input->post('ap_version'),
+							'time_stamp' => $time_stamp
+						);
 					}
-						//All is well display the config file
-						//redirect('main_config/auth/'.$mac.'/'.$key);
-						echo "hello"; // DEBUG
+					else
+					{
+						$data = array(
+							'mac' => $mac,
+							'time_stamp' => $time_stamp
+						);
+					}
+
+					$this->load->model('heartbeat_model');
+					$this->heartbeat_model->heartbeat($data);
+					//All is well display the config file
+					redirect('main_config/auth/'.$mac.'/'.$key);
 				}
 				else
 				{

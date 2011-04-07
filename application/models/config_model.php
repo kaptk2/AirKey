@@ -7,7 +7,7 @@ class Config_model extends CI_Model
 	{
 		$query = $this->db->get_where('configuration',array('mac'=>$mac));
 
-		if($query->num_rows == 0) // no configu
+		if($query->num_rows == 0) // no configuration found
 		{
 			//Return the default config
 			$query = $this->db->get_where('configuration',array('mac'=>'default'));

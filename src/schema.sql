@@ -36,7 +36,7 @@ CREATE TABLE heartbeat (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	uptime CHAR(10),
 	ap_version VARCHAR(255),
-	time_stamp CHAR(10),
+	time_stamp VARCHAR(20),
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

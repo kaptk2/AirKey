@@ -1,7 +1,9 @@
-
-  <div id="footer">
-  <div id="copy_r">Copyright by <a href="http://www.rimrockhosting.com">Rimrock Hosting</a></div>
-  </div>
-  </div>
-</body>
+		<div class='container'>
+			<div id='footer'>
+				<span class="caps">&copy; 
+				<a href="mailto: andrewNiemants@gmail.com">Andrew Niemantsverdriet</a>
+				</span>
+			</div>
+		</div>
+	</body>
 </html>

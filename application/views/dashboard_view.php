@@ -48,9 +48,10 @@
 								$odd = true;
 								foreach($active as $row)
 								{
+									$name = (!empty($row->ap_name) ? $row->ap_name:"Add Name");
 									print '<tr'.(($odd = !$odd)?' class="tr_alt"':'').'>'; // alternate row colors on table rowsprint
-									print '<td><a href="'.site_url("manage/editAP/".$row->mac).'">Add Name</a></td>';
-									print '<td>'.$row->mac.'</td>';
+									print '<td><a href="'.site_url("manage/editAP/".$row->mac).'">'.$name.'</a></td>';
+									print '<td><a title="View AP Info" href="'.site_url("manage/editAP/".$row->mac).'">'.$row->mac.'</a></td>';
 									print '<td>'.$row->time_stamp.'</td>';
 									print '<td><a href="'.site_url('manage/editAP/'.$row->mac).'">'.$row->group_name.'</a></td>';
 									print '<td><input type="checkbox" name="delete[]" value="'.$row->mac.'"></td>';

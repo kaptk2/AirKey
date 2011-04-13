@@ -3,6 +3,7 @@ CREATE TABLE ap (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	ap_key VARCHAR(255) NOT NULL UNIQUE,
 	is_active TINYINT NOT NULL DEFAULT 0,
+	ap_name VARCHAR(255),
 	notes TEXT,
 	location TEXT
 ) ENGINE=InnoDB;

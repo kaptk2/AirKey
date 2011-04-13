@@ -30,6 +30,7 @@ body {background: #a3a3a3;}
 }
 
 #navigationBar { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
+#content { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
 
 #contentLeft {
 	float: left;
@@ -69,5 +70,9 @@ tr.tr_footer td {
 }
 
 th {
-	background-color:#dabd6b;
+	background-color: #dabd6b;
+}
+
+#hidden {
+	display: none;
 }

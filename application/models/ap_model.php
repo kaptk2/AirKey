@@ -71,10 +71,67 @@ class ap_model extends CI_Model
 		return $active->result();
 	}
 
-	function showGroup()
+	function getName($mac)
 	{
-		// show all the active AP's
-		$this->db->delete('ap', array('mac' => $mac));
+		// Get the friendly name of the AP
+		$this->db->select('ap_name');
+		$query = $this->db->get_where('ap', array('mac' => $mac));
+		if ($query->num_rows() > 0)
+			$ret = $query->row();
+		return $ret->ap_name; //return only the ap name
+	}
+
+	function setName($mac, $ap_name)
+	{
+		// set the friendly name of the AP
+		$updateAPname = array(
+			'ap_name' => $ap_name
+		);
+		$this->db->where('mac', $mac);
+		$apUpdate = $this->db->update('ap', $updateAPname);
+		return $apUpdate;
+	}
+
+	function getNotes($mac)
+	{
+		// Get the notes associated with the AP
+		$this->db->select('notes');
+		$query = $this->db->get_where('ap', array('mac' => $mac));
+		if ($query->num_rows() > 0)
+			$ret = $query->row();
+		return $ret->notes; //return only the notes associated with ap
+	}
+
+	function setNotes($mac, $notes)
+	{
+		// Set the notes associated with the AP
+		$updateAPnotes = array(
+			'notes' => $notes
+		);
+		$this->db->where('mac', $mac);
+		$apUpdate = $this->db->update('ap', $updateAPnotes);
+		return $apUpdate;
+	}
+
+	function getLocation($mac)
+	{
+		// Get the physical location of the AP
+		$this->db->select('mac, location');
+		$query = $this->db->get_where('ap', array('mac' => $mac));
+		if ($query->num_rows() > 0)
+			$ret = $query->row();
+		return $ret->location; //return only the location associated with ap
+	}
+
+	function setLocation($mac, $location)
+	{
+		// Set the physical location of the AP
+		$updateAPlocation = array(
+			'location' => $location
+		);
+		$this->db->where('mac', $mac);
+		$apUpdate = $this->db->update('ap', $updateAPlocation);
+		return $apUpdate;
 	}
 }
 ?>

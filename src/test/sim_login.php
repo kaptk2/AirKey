@@ -6,7 +6,7 @@
 	$controller = "http://andrew.rimrockhosting.com";
 	$mac = "080027EA1604";
 	$key = "zNPIWnQy7K8OY4Q4X2Whu5AwnxU5e6zg";
-	$ap_version = "1";
+	$ap_version = "0";
 ?>
 <form name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 URL: <input type="text" name="controller" value="<?php echo $controller; ?>" size="30" />/

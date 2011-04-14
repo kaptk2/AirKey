@@ -32,8 +32,9 @@
 			<ul class='tabs'>
 				<li class='label'><span class="caps">Navigation:</span></li>
 				<?php // Build Menu class selected
-				$manage = ($pageName === 'manage'?"selected":"");
-				$group = ($pageName === 'group'?"selected":"");
+					$manage = ($pageName === 'manage'?"selected":"");
+					$group = ($pageName === 'group'?"selected":"");
+					$modules = ($pageName === 'modules'?"selected":"");
 				?>
 				<li>
 					<a href="<?php echo site_url('manage'); ?>" class="<?php echo $manage; ?>">Dashboard</a>
@@ -42,7 +43,7 @@
 					<a href="<?php echo site_url('group'); ?>" class="<?php echo $group; ?>">Groups</a>
 				</li>
 				<li>
-					<a href="#">Tab 3</a>
+					<a href="<?php echo site_url('modules'); ?>" class="<?php echo $modules; ?>">Modules</a>
 				</li>
 			</ul>
 			</div>

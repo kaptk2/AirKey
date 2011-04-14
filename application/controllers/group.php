@@ -17,6 +17,23 @@
 			$this->load->view('footer_view');
 		}
 
+		function editGroup($group_name)
+		{
+			$menu['totalAP'] = "44";
+			$menu['pending'] = "1";
+			$menu['pageName'] = "group";
+
+			//$this->load->model('group_model');
+			//$data['currentGroups'] = $this->group_model->showGroups();
+			$data['group_name'] = $group_name;
+
+			// Build Groups Page
+			$this->load->view('header_view');
+			$this->load->view('menu_view', $menu);
+			$this->load->view('editGroup_view', $data);
+			$this->load->view('footer_view');
+		}
+
 		function addGroup()
 		{
 			// function to add new groups

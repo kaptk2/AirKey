@@ -61,11 +61,29 @@
 			redirect('manage');
 		}
 
+		function setCommand()
+		{
+			$this->load->model('config_model');
+
+			if ($_POST) //make sure that data has been posted
+			{
+				// get and sanatize variables
+				$mac = $this->input->post('mac');
+				$mac = $this->security->xss_clean($mac);
+				$command = $this->input->post('command');
+				$command = $this->security->xss_clean($command);
+
+				$this->config_model->setCommand($mac, $command);
+			}
+			redirect('manage/editAP/'.$mac);
+		}
+
 		function editAP($mac)
 		{
 			// Edit name, location, notes and group memebership
 			$this->load->model('ap_model');
 			$this->load->model('group_model');
+			$this->load->model('config_model');
 
 			$data['mac'] = $mac;
 			$data['name'] = $this->ap_model->getName($mac);
@@ -74,6 +92,8 @@
 
 			$data['groups'] = $this->group_model->showGroups();
 			$data['currentGroup'] = $this->group_model->getGroup($mac);
+
+			$data['command'] = $this->config_model->getCommand($mac);
 
 			if ($_POST) //make sure that data has been posted
 			{

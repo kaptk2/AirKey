@@ -40,13 +40,13 @@ class ap_model extends CI_Model
 		);
 		$newConfigInsert = array(
 			'mac' => $mac,
-			'current_version' => '0',
-			'run_command' => 'NULL'
+			'current_version' => '1'
 		);
 		$newHeartbeatInsert = array(
 			'mac' => $mac,
 			'time_stamp' => 'NEW'
 		);
+
 		$activateMAC = $this->db->update('ap', array('is_active' => 1), array('mac' => $mac));
 		$groupInsert = $this->db->insert('associates', $newGroupInsert);
 		$configInsert = $this->db->insert('configuration', $newConfigInsert);

@@ -10,7 +10,7 @@
 				</tr>
 				<?php
 					$odd = true;
-					foreach($currentGroups as $row)
+					foreach($current_groups as $row)
 					{
 						print '<tr'.(($odd = !$odd)?' class="tr_alt"':'').'>'; // alternate row colors on table rows
 						print '<td><a href="'.site_url("group/editGroup/".$row->group_name).'">'.$row->group_name.'</td>';

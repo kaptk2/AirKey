@@ -1,22 +1,26 @@
 <?php
 	class Manage extends CI_Controller
 	{
-		function index()
+		function index($page_num = 0)
 		{
 			$this->load->model('ap_model');
-#			$this->load->model('config_model');
+
+			$this->load->library('pagination');
+			//Setup pagination
+			$per_page = 5;
+			$config['base_url'] = site_url('manage/index');
+			$config['total_rows'] = $this->ap_model->activeAPCount();
+			$config['per_page'] = $per_page;
+			$this->pagination->initialize($config);
 
 			$data['pending'] = $this->ap_model->showPendingAP();
-			$data['active'] = $this->ap_model->showActiveAP();
-#			$data['dangers'] = $this->aplist_model->apHealth();
+			$data['active'] = $this->ap_model->showActiveAP($per_page,$page_num);
+			$data['pages'] = $this->pagination->create_links();
 
-#			$data['pendingCmd'] = $this->config_model->pendingCmd();
-
-#			$this->load->model('heartbeat_model');
-#			$data['heartbeat'] = $this->heartbeat_model->showLog();
-			$menu['pageName'] = "manage";
-			$menu['totalAP'] = "22";
-			$menu['pending'] = "2";
+			$menu['page_name'] = "manage";
+			$menu['total_AP'] = $this->ap_model->activeAPCount();
+			$menu['pending'] = "2"; //TODO
+			$menu['network_status'] = "A OK"; //TODO
 
 			// Build Dashboard Page
 			$this->load->view('header_view');
@@ -126,9 +130,10 @@
 				redirect('manage/editAP/'.$mac);
 			}
 
-			$menu['pageName'] = "manage";
-			$menu['totalAP'] = "22";
-			$menu['pending'] = "2";
+			$menu['page_name'] = "manage";
+			$menu['total_AP'] = $this->ap_model->activeAPCount();
+			$menu['pending'] = "2"; //TODO
+			$menu['network_status'] = "A OK"; //TODO
 
 			// Build editAP Page
 			$this->load->view('header_view');

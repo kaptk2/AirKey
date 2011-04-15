@@ -3,12 +3,15 @@
 	{
 		function index()
 		{
-			$menu['totalAP'] = "44";
-			$menu['pending'] = "1";
-			$menu['pageName'] = "group";
-
 			$this->load->model('group_model');
-			$data['currentGroups'] = $this->group_model->showGroups();
+			$this->load->model('ap_model');
+
+			$menu['total_AP'] = $this->ap_model->activeAPCount();
+			$menu['pending'] = "1";
+			$menu['page_name'] = "group";
+			$menu['network_status'] = "A OK"; //TODO
+
+			$data['current_groups'] = $this->group_model->showGroups();
 
 			// Build Groups Page
 			$this->load->view('header_view');
@@ -19,13 +22,19 @@
 
 		function editGroup($group_name)
 		{
-			$menu['totalAP'] = "44";
-			$menu['pending'] = "1";
-			$menu['pageName'] = "group";
+			$this->load->model('modules_model');
+			$this->load->model('group_model');
+			$this->load->model('ap_model');
 
-			//$this->load->model('group_model');
-			//$data['currentGroups'] = $this->group_model->showGroups();
+			$menu['total_AP'] = $this->ap_model->activeAPCount();
+			$menu['pending'] = "1";
+			$menu['page_name'] = "group";
+			$menu['network_status'] = "A OK"; //TODO
+
 			$data['group_name'] = $group_name;
+			$data['all_modules'] = $this->modules_model->showModules();
+			$data['installed_modules'] = $this->modules_model->getModules($group_name);
+			$data['group_desc'] = $this->group_model->getGroupDescription($group_name);
 
 			// Build Groups Page
 			$this->load->view('header_view');
@@ -108,6 +117,42 @@
 					}
 				}
 				redirect('group');
+			}
+		}
+
+		function editModules()
+		{
+			// function that add and removes modules from groups
+			$this->load->model('modules_model');
+			if ($_POST) //make sure that data has been posted
+			{
+				// Initalize and sanatize variables
+				$group_name = $this->input->post('group_name');
+				$group_name = $this->security->xss_clean($group_name);
+
+				$remove_modules = $this->input->post('installed_modules');
+				$add_modules = $this->input->post('new_modules');
+
+				// Remove Selected Modules
+				if (!empty($remove_modules))
+				{
+					foreach ($remove_modules as $remove_module)
+					{
+						$remove_module = $this->security->xss_clean($remove_module);
+						$this->modules_model->removeModule($group_name, $remove_module);
+					}
+				}
+
+				// Add Selected Modules
+				if (!empty($add_modules))
+				{
+					foreach ($add_modules as $add_module)
+					{
+						$add_module = $this->security->xss_clean($add_module);
+						$this->modules_model->addModule($group_name, $add_module);
+					}
+				}
+				redirect('group/editGroup/'.$group_name);
 			}
 		}
 	}

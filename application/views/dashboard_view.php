@@ -58,17 +58,12 @@
 									print '</tr>';
 								}
 								print '<tr class="tr_footer">';
-								print '<td colspan="5"><input type="submit" value="Submit"></td>';
+								print '<td colspan="4">'.$pages.'</td>'; // show page links
+								print '<td><input type="submit" value="Submit"></td>';
 								print '</tr>';
 							}
 							?>
 					</table>
 				</form>
-				<?php
-					if(!empty($active))
-					{
-						echo "<p>Page Navigation goes here</p>"; //TODO
-					}
-				?>
 			</div>
 		</div>

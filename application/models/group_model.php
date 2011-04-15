@@ -64,5 +64,11 @@ class group_model extends CI_Model
 		$memberUpdate = $this->db->update('associates', $updateMemberInsert);
 		return $memberUpdate;
 	}
+
+	function getGroupDescription($group_name)
+	{
+		$query = $this->db->get_where('groups', array('group_name' => $group_name));
+		return $query->row();
+	}
 }
 ?>

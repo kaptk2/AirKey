@@ -7,7 +7,7 @@
 			$this->load->model('ap_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "1";
+			$menu['pending'] = "1"; //TODO
 			$menu['page_name'] = "group";
 			$menu['network_status'] = "A OK"; //TODO
 
@@ -27,7 +27,7 @@
 			$this->load->model('ap_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "1";
+			$menu['pending'] = "1"; //TODO
 			$menu['page_name'] = "group";
 			$menu['network_status'] = "A OK"; //TODO
 
@@ -49,8 +49,6 @@
 			$this->load->model('group_model');
 			if ($_POST) //make sure that data has been posted
 			{
-				$this->load->model('group_model');
-
 				$group_name = $this->input->post('group_name');
 				$group_name = $this->security->xss_clean($group_name);
 

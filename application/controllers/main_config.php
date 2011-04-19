@@ -22,13 +22,12 @@
 					{
 						// Valid User found make the config file
 						$this->load->model('config_model');
-						// If the command was not blank then remove it
-						//TODO Fix the removeing command
-#						if ($command == 'removeCommand')
-#						{
-#							$this->config_model->removeCommand($mac);
-#							return true;
-#						}
+						// If the $command has run then remove it
+						if ($command == 'removeCommand')
+						{
+							$this->config_model->removeCommand($mac);
+							return true;
+						}
 
 						// Get the data to build the configuration file
 						$data['config'] = $this->config_model->getMainConfig($mac);

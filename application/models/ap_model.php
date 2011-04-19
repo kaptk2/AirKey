@@ -143,5 +143,14 @@
 			$this->db->join('heartbeat', 'heartbeat.mac = ap.mac');
 			return $this->db->count_all_results();
 		}
+
+		function apSearch($search_term)
+		{
+			$this->db->or_like('mac', $search_term);
+			$this->db->or_like('ap_name', $search_term);
+
+			$search = $this->db->get('ap');
+			return $search->result();
+		}
 	}
 ?>

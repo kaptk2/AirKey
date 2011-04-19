@@ -3,61 +3,34 @@
 	{
 		function index()
 		{
-			$menu['pageName'] = "Search";
-			$this->load->view('header_view');
-			$this->load->view('menu_view');
-			$this->load->model('ap_model');
-			$this->load->model('group_model');
-			$this->load->view('footer_view');	
-		}
-
-		function search_for_ap($input)
-		{
-			if($input != "")
+			if ($_POST) //make sure that data has been posted
 			{
+				$search_term = $this->input->post('search_term');
+				$search_term = $this->security->xss_clean($search_term);
+				// Search APs
 				$this->load->model('ap_model');
-
-				$ap_results = array();
-				$macs = $this->db->get_where('ap', array('mac' => $mac));
-				
-				foreach($macs as $cursor)
-				{
-					if($cursor == $input)
-						   array_push($ap_results, $cursor);
-				}
-
-				return $ap_results;				
-			}
-
-			else
-			{			
-				echo "Search input was empty.";
-				exit;
-			}			
-		}
-
-		function search_for_group($input)
-		{
-			if($input != "")
-			{
+				$data['ap_results'] = $this->ap_model->apSearch($search_term);
+				// Search Groups
 				$this->load->model('group_model');
+				$data['group_results'] = $this->group_model->groupSearch($search_term);
 
-				$group_results = array();
-				$group_names = $this->db->get_where('groups', array('group_name' => $group_name));
-				
-				foreach($group_names as $cursor)
-				{
-					if($cursor == $input)
-						   array_push($group_results, $cursor);
-				}
+				// Load View to show search results
+				$menu['page_name'] = ""; //pass empty page name
+				$menu['total_AP'] = $this->ap_model->activeAPCount();
+				$menu['pending'] = "2"; //TODO
+				$menu['network_status'] = "A OK"; //TODO
 
-				return $group_results;
+				// Build Search Page
+				$this->load->view('header_view');
+				$this->load->view('menu_view', $menu);
+				$this->load->view('search_view', $data);
+				$this->load->view('footer_view');
 			}
-
 			else
 			{
-				echo "Search input was empty.";
-				exit;
+				// No Search Term Passed Error
+				$data['error_msg'] = "No Search Term";
+				$this->load->view('error_view', $data);
 			}
 		}
 	}

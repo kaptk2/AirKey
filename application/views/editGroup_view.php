@@ -50,11 +50,16 @@
 				<label for="current_group">Current Group Name: </label>
 				<input type="text" disabled="disabled" name="current_group" value="<?php echo $group_name; ?>">
 				<br>
-				<label for="new_group">New Group Name: </label>
-				<input type="text" name="new_group">
-				<label for="moveMembers">Move Members? </label>
-				<input type="checkbox" name="moveMembers" value="true">
-				<br>
+				<?php
+					if ($group_name != "default")
+					{
+						print '<label for="new_group">New Group Name: </label>';
+						print '<input type="text" name="new_group">&nbsp;';
+						print '<label for="moveMembers">Move Members? </label>';
+						print '<input type="checkbox" name="moveMembers" value="true">';
+						print '<br>';
+					}
+				?>
 				<label for="group_desc">Group Description: </label><br>
 				<textarea name="group_desc"><?php echo $group_desc->group_description; ?></textarea>
 				<p><input type="submit" value="submit"></p>

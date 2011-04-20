@@ -32,7 +32,7 @@
 				<?php // Build Menu class selected
 					$manage = ($page_name === 'manage'?"selected":"");
 					$group = ($page_name === 'group'?"selected":"");
-					$modules = ($page_name === 'modules'?"selected":"");
+					$modules = ($page_name === 'module'?"selected":"");
 				?>
 				<li>
 					<a href="<?php echo site_url('manage'); ?>" class="<?php echo $manage; ?>">Dashboard</a>
@@ -41,7 +41,7 @@
 					<a href="<?php echo site_url('group'); ?>" class="<?php echo $group; ?>">Groups</a>
 				</li>
 				<li>
-					<a href="<?php echo site_url('modules'); ?>" class="<?php echo $modules; ?>">Modules</a>
+					<a href="<?php echo site_url('module'); ?>" class="<?php echo $modules; ?>">Modules</a>
 				</li>
 			</ul>
 			</div>

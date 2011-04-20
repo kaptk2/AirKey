@@ -69,7 +69,7 @@ case "$1" in
                 for module in $var_modules #Array of modules
                 do
                   # Get module config file
-                  curl -k -s -o /tmp/$module $CONTROLLER/module/$module/$var_mac/$var_key
+                  curl -k -s -o /tmp/$module $CONTROLLER/module/buildModule/$module/$var_mac/$var_key
                   source /tmp/$module # Use the variables provided in the module defination file
 
                   if [ -n "$var_package" ] #If the package variable exists make sure it is installed

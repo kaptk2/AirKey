@@ -144,8 +144,19 @@
 			return $this->db->count_all_results();
 		}
 
+		function pendingCommand()
+		{
+			// Show all commands that are pending
+			$this->db->select('run_command');
+			$this->db->from('configuration');
+			$this->db->where('run_command !=', 'NULL');
+			$this->db->or_where('run_command !=', ''); 
+			return $this->db->count_all_results();
+		}
+
 		function apSearch($search_term)
 		{
+			//Search for AP names or MACs
 			$this->db->or_like('mac', $search_term);
 			$this->db->or_like('ap_name', $search_term);
 

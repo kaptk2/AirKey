@@ -17,7 +17,7 @@
 				// Load View to show search results
 				$menu['page_name'] = ""; //pass empty page name
 				$menu['total_AP'] = $this->ap_model->activeAPCount();
-				$menu['pending'] = "2"; //TODO
+				$menu['pending'] = $this->ap_model->pendingCommand();
 				$menu['network_status'] = "A OK"; //TODO
 
 				// Build Search Page

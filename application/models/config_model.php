@@ -23,11 +23,12 @@ class Config_model extends CI_Model
 		return $data;
 	}
 
-	function removeCommand($mac)
+	function updateVersion($mac)
 	{
-		$this->db->where('mac', $mac);
-		$this->db->set('run_command', '');
-		$this->db->update('configuration');
+		// Increments the version number
+		$sql = "UPDATE configuration SET current_version=current_version+1 WHERE mac='$mac'";
+		$query = $this->db->query($sql);
+		return $query;
 	}
 
 	function getCommand($mac)
@@ -39,7 +40,16 @@ class Config_model extends CI_Model
 	function setCommand($mac, $command)
 	{
 		// Sets a new command and updates the version number
-		$sql = "UPDATE configuration SET current_version=current_version+1, run_command='$command' WHERE mac='$mac'";
+		$this->db->where('mac', $mac);
+		$query = $this->db->update('configuration', array('run_command' => $command));
+		$this->updateVersion($mac); //update the version number
+		return $query;
+	}
+
+	function removeCommand($mac)
+	{
+		// Remove a command from the configuration table
+		$sql = "UPDATE configuration SET run_command=null WHERE mac='$mac'";
 		$query = $this->db->query($sql);
 		return $query;
 	}

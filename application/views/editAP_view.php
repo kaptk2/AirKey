@@ -10,7 +10,8 @@
 			<input type="hidden" name="mac" value="<?php echo $mac; ?>">
 			<label for="command">Command to run: </lable>
 			<input type="text" name="command" value="<?php echo $command->run_command; ?>">
-			<input type="submit" value="Add Command">
+			<input type="submit" name="add" value="Add Command">
+			<input type="submit" name="remove" value="Remove Command">
 		</fieldset>
 	</form>
 	<?php

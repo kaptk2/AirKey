@@ -7,7 +7,7 @@
 			$this->load->model('ap_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "1"; //TODO
+			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['page_name'] = "group";
 			$menu['network_status'] = "A OK"; //TODO
 
@@ -27,7 +27,7 @@
 			$this->load->model('ap_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "1"; //TODO
+			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['page_name'] = "group";
 			$menu['network_status'] = "A OK"; //TODO
 

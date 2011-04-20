@@ -19,7 +19,7 @@
 
 			$menu['page_name'] = "manage";
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "2"; //TODO
+			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['network_status'] = "A OK"; //TODO
 
 			// Build Dashboard Page
@@ -69,7 +69,7 @@
 		{
 			$this->load->model('config_model');
 
-			if ($_POST) //make sure that data has been posted
+			if (isset($_POST['add'])) //if the add button has been pushed add command
 			{
 				// get and sanatize variables
 				$mac = $this->input->post('mac');
@@ -78,6 +78,15 @@
 				$command = $this->security->xss_clean($command);
 
 				$this->config_model->setCommand($mac, $command);
+			}
+
+			if (isset($_POST['remove'])) //if the add button has been pushed add command
+			{
+				// get and sanatize variables
+				$mac = $this->input->post('mac');
+				$mac = $this->security->xss_clean($mac);
+
+				$this->config_model->removeCommand($mac, $command);
 			}
 			redirect('manage/editAP/'.$mac);
 		}
@@ -132,7 +141,7 @@
 
 			$menu['page_name'] = "manage";
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
-			$menu['pending'] = "2"; //TODO
+			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['network_status'] = "A OK"; //TODO
 
 			// Build editAP Page

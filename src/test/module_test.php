@@ -1,13 +1,13 @@
 <?php 
 	// Default Variables
 	$controller = "http://andrew.rimrockhosting.com";
-	$mac = "08:00:27:EA:16:04";
+	$mac = "080027EA1604";
 	$key = "zNPIWnQy7K8OY4Q4X2Whu5AwnxU5e6zg";
 	$module = "network";
 ?>
 <h3>Get Module Config</h3>
 <form name="form1" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-URL: <input type="text" name="controller" value="<?php echo $controller; ?>" size="30" />/
+URL: <input type="text" name="controller" value="<?php echo $controller; ?>" size="30" />/module/buildModule/
 		 <input type="text" name="module" value="<?php echo $module; ?>" size="10" />/
 		 <input type="text" name="mac" value="<?php echo $mac; ?>" size="13" />/
 		 <input type="text" name="key" value="<?php echo $key; ?>" size="33"/>
@@ -24,7 +24,7 @@ URL: <input type="text" name="controller" value="<?php echo $controller; ?>" siz
 		$module = $_POST['module'];
 
 		// Build the URL
-		$url = $controller.'/modules/'.$module.'/auth/'.$mac.'/'.$key;
+		$url = $controller.'/module/buildModule/'.$module.'/'.$mac.'/'.$key;
 
 		$ch = curl_init($url);
 		// Ignore invalid ssl

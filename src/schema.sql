@@ -58,14 +58,16 @@ CREATE TABLE module_files (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	remote_file VARCHAR(255) NOT NULL,
 	local_file VARCHAR(255) NOT NULL,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE module_commands (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	command VARCHAR(255),
 	package_name VARCHAR(255),
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE configuration (
@@ -79,5 +81,6 @@ CREATE TABLE loads (
 	group_name VARCHAR(255) NOT NULL,
 	module_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
 ) ENGINE=InnoDB;

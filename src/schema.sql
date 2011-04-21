@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS heartbeat;
 DROP TABLE IF EXISTS associates;
 DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS administrator;
-DROP TABLE IF EXISTS modules;
 DROP TABLE IF EXISTS module_files;
 DROP TABLE IF EXISTS module_commands;
+DROP TABLE IF EXISTS modules;
 DROP TABLE IF EXISTS ap;
 
 CREATE TABLE ap (
@@ -58,16 +58,14 @@ CREATE TABLE module_files (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	remote_file VARCHAR(255) NOT NULL,
 	local_file VARCHAR(255) NOT NULL,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE module_commands (
 	module_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	command VARCHAR(255),
 	package_name VARCHAR(255),
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE configuration (
@@ -81,6 +79,5 @@ CREATE TABLE loads (
 	group_name VARCHAR(255) NOT NULL,
 	module_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE,
-	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON UPDATE CASCADE
+	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

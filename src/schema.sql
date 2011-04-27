@@ -64,14 +64,14 @@ CREATE TABLE module_files (
 CREATE TABLE module_commands (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	module_name VARCHAR(255) NOT NULL,
-	command VARCHAR(255),
+	command VARCHAR(255) NOT NULL,
 	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE module_packages (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	module_name VARCHAR(255) NOT NULL,
-	package_name VARCHAR(255),
+	package_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 

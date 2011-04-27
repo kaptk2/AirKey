@@ -16,21 +16,15 @@ class Modules_model extends CI_Model
 			return $query->result();
 		}
 
-		function getAllModules()
-		{
-			// Get all of the avaiable modules
-			$query = $this->db->get('modules');
-			return $query->result();
-		}
-
-		function removeModule($group_name, $module_name)
+		function removeModuleFromGroup($group_name, $module_name)
 		{
 			// Delete the module associated with a group
 			$query = $this->db->delete('loads', array('group_name' => $group_name, 'module_name' => $module_name));
+			//TODO increment version number
 			return true;
 		}
 
-		function addModule($group_name, $module_name)
+		function addModuleToGroup($group_name, $module_name)
 		{
 			// Add a module to a group
 			$newModuleInsert = array(
@@ -38,22 +32,163 @@ class Modules_model extends CI_Model
 				'module_name' => $module_name
 			);
 			$moduleInsert = $this->db->insert('loads', $newModuleInsert);
+			//TODO increment version number
 			return $moduleInsert;
 		}
 
 		function updateModuleVersion($module_name)
 		{
-			// update the module version number
-			$sql = "UPDATE modules SET module_version=current_version+1 WHERE module_name='$module_name'";
-			$query = $this->db->query($sql); //Update the version number
-			return $query;
+			// update the module and config version number 
+			$sql1 = "SELECT c.mac FROM configuration c ";
+			$sql1 .= "LEFT JOIN associates a ON c.mac = a.mac ";
+			$sql1 .= "LEFT JOIN loads l ON a.group_name = l.group_name ";
+			$sql1 .= "LEFT JOIN modules m ON l.module_name = m.module_name ";
+			$sql1 .= "WHERE m.module_name='$module_name'";
+			$query1 = $this->db->query($sql1);
+			// The query gets all the MACs that use the module
+			$results = $query1->result();
+
+			$this->load->model('config_model');
+			foreach ($results as $result)
+			{
+				// Update the config version number
+				$this->config_model->updateVersion($result->mac);
+			}
+
+			$sql2 = "UPDATE modules SET module_version=module_version+1 WHERE module_name='$module_name'";
+			$query2 = $this->db->query($sql2);
+			return true;
+		}
+
+		function addModule($module_name)
+		{
+			// create a new module
+			$newModuleInsert = array(
+				'module_name' => $module_name,
+				'module_version' => '0'
+			);
+			$moduleInsert = $this->db->insert('modules', $newModuleInsert);
+			return $moduleInsert;
+		}
+
+		function deleteModule($module_name)
+		{
+			// delete a module
+			$this->db->delete('modules', array('module_name' => $module_name));
+			return true;
+		}
+
+		function renameModule($old_module, $new_module)
+		{
+			// rename a module
+			$this->db->where('module_name', $old_module);
+			$this->db->update('modules', array('module_name' => $new_module));
+			return true;
+		}
+
+		function cloneModule($old_module, $new_module)
+		{
+			// clone a module
+			$this->addModule($new_module);
+			// Get Files from the old module and insert them under new module
+			$new_files = $this->getModuleFiles($old_module);
+			foreach ($new_files as $file)
+			{
+				$this->addFile($new_module, $file->local_file, $file->remote_file);
+			}
+			// Get commands from the old module and insert them under new module
+			$new_commands = $this->getModuleCommands($old_module);
+			foreach ($new_commands as $command)
+			{
+				$this->addCommand($new_module, $command->command);
+			}
+			// Get packages from the old module and insert them under new module
+			$new_packages = $this->getModulePackages($old_module);
+			foreach ($new_commands as $command)
+			{
+				$this->addCommand($new_module, $command->command);
+			}
+			return true;
+		}
+
+		function addCommand($module_name, $command)
+		{
+			// add a command to a module
+			$newCommandInsert = array(
+				'module_name' => $module_name,
+				'command' => $command
+			);
+			$commandInsert = $this->db->insert('module_commands', $newCommandInsert);
+			$this->updateModuleVersion($module_name);
+			return $commandInsert;
+		}
+
+		function removeCommand($id)
+		{
+			// remove a command from a module
+			$newCommandInsert = array(
+				'module_name' => $module_name,
+				'command' => $command
+			);
+			$commandInsert = $this->db->insert('module_commands', $newCommandInsert);
+			$this->updateModuleVersion($module_name);
+			return $commandInsert;
+		}
+
+		function addPackage($module_name, $package_name)
+		{
+			// add a package to a module
+			$newPackageInsert = array(
+				'module_name' => $module_name,
+				'package_name' => $package_name
+			);
+			$packageInsert = $this->db->insert('module_packages', $newPackageInsert);
+			$this->updateModuleVersion($module_name);
+			return $packageInsert;
+		}
+
+		function addFile($module_name, $remote_file, $local_file)
+		{
+			// adds a file to a moudule
+			//TODO
+			return true;
+		}
+
+		function getModuleFiles($module_name)
+		{
+			// get the files associated with a module
+			//TODO
+			return true;
+		}
+
+		function getModuleCommands($module_name)
+		{
+			// get the commands associated with a module
+			$query = $this->db->get_where('module_commands', array('module_name' => $module_name));
+			return $query->result()		function addCommand($module_name, $command)
+		{
+			// add a command to a module
+			$newCommandInsert = array(
+				'module_name' => $module_name,
+				'command' => $command
+			);
+			$commandInsert = $this->db->insert('module_commands', $newCommandInsert);
+			$this->updateModuleVersion($module_name);
+			return $commandInsert;
+		}
+;
+		}
+
+		function getModulePackages($module_name)
+		{
+			// get the packages associated with a module
+			//TODO
+			return true;
 		}
 
 		function buildModule($module_name)
 		{
 			// function to build a module file
-#			$module_config = $this->db->get_where('modules',array('module_name' => $module_name));
-#			$data['module_config'] = $module_config->row();
 			$this->db->select('*');
 			$this->db->from('modules');
 			$this->db->where('modules.module_name', $module_name);

@@ -19,5 +19,5 @@
 		<!-- Site JavaScript Files -->
 		<script type="text/javascript" src="<?php echo site_url('static/js/jquery-1.4.4.min.js'); ?>"></script>
 		<script type="text/javascript" src="<?php echo site_url('static/fancybox/jquery.fancybox-1.3.4.pack.js'); ?>"></script>
-	</head>
 
+	</head>

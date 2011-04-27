@@ -27,6 +27,17 @@
 				?>
 			</fieldset>
 		</form>
+		<?php
+			$attributes = array('id' => 'createModule', 'class' => 'inline');
+			echo form_open('module/createModule', $attributes);
+		?>
+			<fieldset>
+				<legend>Create A New Module</legend>
+				<label for="module_name">Module Name: </label>
+				<input type="text" name="module_name">&nbsp;
+				<input type="submit" value="submit">
+			</fieldset>
+		</form>
 		<h3>Download New Modules</h3>
 		<p>todo</p>
 	</div>

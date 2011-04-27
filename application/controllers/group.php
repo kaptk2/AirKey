@@ -137,7 +137,7 @@
 					foreach ($remove_modules as $remove_module)
 					{
 						$remove_module = $this->security->xss_clean($remove_module);
-						$this->modules_model->removeModule($group_name, $remove_module);
+						$this->modules_model->removeModuleFromGroup($group_name, $remove_module);
 					}
 				}
 
@@ -147,7 +147,7 @@
 					foreach ($add_modules as $add_module)
 					{
 						$add_module = $this->security->xss_clean($add_module);
-						$this->modules_model->addModule($group_name, $add_module);
+						$this->modules_model->addModuleToGroup($group_name, $add_module);
 					}
 				}
 				redirect('group/editGroup/'.$group_name);

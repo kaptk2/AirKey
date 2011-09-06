@@ -21,8 +21,6 @@
 				$validUser = $this->validate->validateUser($mac, $key);
 					if($validUser)
 					{
-						f
-
 						return true;
 					}
 			}

@@ -49,10 +49,12 @@
 						foreach($active as $row)
 						{
 							$name = (!empty($row->ap_name) ? $row->ap_name:"Add Name");
+							// Convert the time_stamp to human readable format from epoch
+							$time_stamp = ($row->time_stamp == 'NEW') ? 'NEW' : date("Y-m-d H:i:s", (int) $row->time_stamp);
 							print '<tr'.(($odd = !$odd)?' class="tr_alt"':'').'>'; // alternate row colors on table rowsprint
 							print '<td><a href="'.site_url("manage/editAP/".$row->mac).'">'.$name.'</a></td>';
 							print '<td><a title="View AP Info" href="'.site_url("manage/editAP/".$row->mac).'">'.$row->mac.'</a></td>';
-							print '<td>'.$row->time_stamp.'</td>';
+							print '<td>'.$time_stamp.'</td>';
 							print '<td><a href="'.site_url('manage/editAP/'.$row->mac).'">'.$row->group_name.'</a></td>';
 							print '<td><input type="checkbox" name="delete[]" value="'.$row->mac.'"></td>';
 							print '</tr>';

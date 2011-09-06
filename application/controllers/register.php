@@ -28,7 +28,7 @@ class Register extends CI_Controller
 
 				if($validUser)
 				{
-					$time_stamp = date("Y-m-d H:i:s");
+					$time_stamp = time();
 					if (isset($_POST['uptime']))
 					{
 						//Get Heartbeat Data

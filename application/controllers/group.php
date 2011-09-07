@@ -5,11 +5,12 @@
 		{
 			$this->load->model('group_model');
 			$this->load->model('ap_model');
+			$this->load->model('heartbeat_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
 			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['page_name'] = "group";
-			$menu['network_status'] = "A OK"; //TODO
+			$menu['network_status'] = $this->heartbeat_model->countTroubleAP();
 
 			$data['current_groups'] = $this->group_model->showGroups();
 
@@ -25,11 +26,12 @@
 			$this->load->model('modules_model');
 			$this->load->model('group_model');
 			$this->load->model('ap_model');
+			$this->load->model('heartbeat_model');
 
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
 			$menu['pending'] = $this->ap_model->pendingCommand();
 			$menu['page_name'] = "group";
-			$menu['network_status'] = "A OK"; //TODO
+			$menu['network_status'] = $this->heartbeat_model->countTroubleAP();
 
 			$data['group_name'] = $group_name;
 			$data['all_modules'] = $this->modules_model->showModules();

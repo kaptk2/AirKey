@@ -98,6 +98,7 @@
 			$this->load->model('ap_model');
 			$this->load->model('group_model');
 			$this->load->model('config_model');
+			$this->load->model('heartbeat_model');
 
 			$data['mac'] = $mac;
 			$data['name'] = $this->ap_model->getName($mac);
@@ -143,7 +144,7 @@
 			$menu['page_name'] = "manage";
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
 			$menu['pending'] = $this->ap_model->pendingCommand();
-			$menu['network_status'] = "A OK"; //TODO
+			$menu['network_status'] = $this->heartbeat_model->countTroubleAP();
 
 			// Build editAP Page
 			$this->load->view('header_view');

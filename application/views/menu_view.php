@@ -8,7 +8,7 @@
 				<p>
 					<span class="caps">Total Access Points: </span><?php echo $total_AP; ?><br/>
 					<span class="caps">Pending Commands: </span><?php echo $pending; ?><br />
-					<span class="caps">Network Status: </span><a href="./status"><?php echo $network_status; ?></a>
+					<span class="caps">Network Status: </span><a href="/status"><?php echo $network_status; ?></a>
 				</p>
 			</div>
 			<hr />

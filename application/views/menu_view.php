@@ -8,7 +8,7 @@
 				<p>
 					<span class="caps">Total Access Points: </span><?php echo $total_AP; ?><br/>
 					<span class="caps">Pending Commands: </span><?php echo $pending; ?><br />
-					<span class="caps">Network Status: </span><?php echo $network_status; ?>
+					<span class="caps">Network Status: </span><a href="./status"><?php echo $network_status; ?></a>
 				</p>
 			</div>
 			<hr />
@@ -33,6 +33,7 @@
 					$manage = ($page_name === 'manage'?"selected":"");
 					$group = ($page_name === 'group'?"selected":"");
 					$modules = ($page_name === 'module'?"selected":"");
+					$status = ($page_name === 'status'?"selected":"");
 				?>
 				<li>
 					<a href="<?php echo site_url('manage'); ?>" class="<?php echo $manage; ?>">Dashboard</a>
@@ -42,6 +43,9 @@
 				</li>
 				<li>
 					<a href="<?php echo site_url('module'); ?>" class="<?php echo $modules; ?>">Modules</a>
+				</li>
+				<li>
+					<a href="<?php echo site_url('status'); ?>" class="<?php echo $status; ?>">Status</a>
 				</li>
 			</ul>
 			</div>

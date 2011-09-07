@@ -57,16 +57,17 @@
 			if (!empty($commands))
 			{
 				// display the table listing of file
-				echo form_open('module/removeCommands');
+				echo form_open('module/removeCommand');
+				print '<input type="hidden" name="module_name" value="'.$module_name.'">';
 				print '<ol>';
 				foreach($commands as $row)
 				{
-					print '<li><input type="checkbox" name="cmd_id[]" value="'.$row->id.'">';
+					print '<li><input type="checkbox" name="cmd_ids[]" value="'.$row->id.'">';
 					print $row->command.'</li>';
 				}
 				print '</ol>';
 				print '<input type="submit" value="remove commands">';
-				echo '</form>';
+				print '</form>';
 			}
 			else
 			{
@@ -88,15 +89,17 @@
 			if (!empty($packages))
 			{
 				// display the table listing of file
-				echo form_open('manage/managePending');
+				echo form_open('module/removePackage');
+				print '<input type="hidden" name="module_name" value="'.$module_name.'">';
 				print '<ol>';
 				foreach($packages as $row)
 				{
-					print '<input type="hidden" name="cmd_id" value="'.$row->id.'">';
-					print '<li>'.$row->package_name.'</li>';
+					print '<li><input type="checkbox" name="pkg_ids[]" value="'.$row->id.'">';
+					print $row->package_name.'</li>';
 				}
 				print '</ol>';
-				echo '</form>';
+				print '<input type="submit" value="remove packages">';
+				print '</form>';
 			}
 			else
 			{

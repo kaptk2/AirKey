@@ -4,6 +4,7 @@
 		function index($page_num = 0)
 		{
 			$this->load->model('ap_model');
+			$this->load->model('heartbeat_model');
 
 			$this->load->library('pagination');
 			//Setup pagination
@@ -20,7 +21,7 @@
 			$menu['page_name'] = "manage";
 			$menu['total_AP'] = $this->ap_model->activeAPCount();
 			$menu['pending'] = $this->ap_model->pendingCommand();
-			$menu['network_status'] = "A OK"; //TODO
+			$menu['network_status'] = $this->heartbeat_model->countTroubleAP();
 
 			// Build Dashboard Page
 			$this->load->view('header_view');

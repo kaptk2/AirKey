@@ -126,13 +126,7 @@ class Modules_model extends CI_Model
 		function removeCommand($id)
 		{
 			// remove a command from a module
-			$newCommandInsert = array(
-				'module_name' => $module_name,
-				'command' => $command
-			);
-			$commandInsert = $this->db->insert('module_commands', $newCommandInsert);
-			$this->updateModuleVersion($module_name);
-			return $commandInsert;
+			return $this->db->delete('module_commands', array('id' => $id));
 		}
 
 		function addPackage($module_name, $package_name)
@@ -145,6 +139,12 @@ class Modules_model extends CI_Model
 			$packageInsert = $this->db->insert('module_packages', $newPackageInsert);
 			$this->updateModuleVersion($module_name);
 			return $packageInsert;
+		}
+
+		function removePackage($id)
+		{
+			// remove a package from a module
+			return $this->db->delete('module_packages', array('id' => $id));
 		}
 
 		function addFile($module_name, $remote_file, $local_file)
@@ -165,25 +165,14 @@ class Modules_model extends CI_Model
 		{
 			// get the commands associated with a module
 			$query = $this->db->get_where('module_commands', array('module_name' => $module_name));
-			return $query->result()		function addCommand($module_name, $command)
-		{
-			// add a command to a module
-			$newCommandInsert = array(
-				'module_name' => $module_name,
-				'command' => $command
-			);
-			$commandInsert = $this->db->insert('module_commands', $newCommandInsert);
-			$this->updateModuleVersion($module_name);
-			return $commandInsert;
-		}
-;
+			return $query->result();
 		}
 
 		function getModulePackages($module_name)
 		{
 			// get the packages associated with a module
-			//TODO
-			return true;
+			$query = $this->db->get_where('module_packages', array('module_name' => $module_name));
+			return $query->result();
 		}
 
 		function buildModule($module_name)

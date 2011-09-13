@@ -1,4 +1,4 @@
-<?php $this->load->helper('form'); ?>
+
 <div class='container'>
 	<div class='content'>
 		<?php
@@ -10,41 +10,58 @@
 				<legend>Edit Module: <?php echo $module_name; ?></legend>
 				<label for="module_name">New Module Name: </label>
 				<input type="text" name="module_name">&nbsp;
-				<input type="submit" name="buttons" value="clone">
-				<input type="submit" name="buttons" value="rename">
-				<input type="submit" name="buttons" value="delete this module">
+				<input type="submit" name="buttons" value="clone" />
+				<input type="submit" name="buttons" value="rename" />
+				<input type="submit" name="buttons" value="delete this module" />
 			</fieldset>
+		</form>
 	</div>
 
 	<div id='contentLeft'>
 		<?php
+			echo form_open_multipart('module/upload/'.$module_name);?>
+			<fieldset>
+					<legend>Upload Files</legend>
+					<label for="userfile">File Name:</label>
+					<!-- Browse Button -->
+					<input type="file" name="userfile" size="20" />
+					<br />
+					<label for="ap_location">Location on Access Point</label>
+					<input type="text" name="ap_location" />
+					<input type="submit" value="Add File" />
+			</fieldset>
+		</form>
+		<br />
+		<br />
+		<?php
 			if (!empty($files))
 			{
+				echo form_open('module/manageFiles/'.$module_name);
 				// display the table listing of file
-				echo form_open('manage/managePending');
 				print '<table>';
 				print '<tr>';
-				print '<th>Location On Server</th><th>Location On AP</th><th>Delete</th>';
+				print '<th>File Name</th><th>Location On AP</th><th>Delete</th>';
 				print '</tr>';
 				$odd = true;
 				foreach($files as $row)
 				{
+					print '<input type="hidden" name="orig_names[]" value="'.$row->remote_file.'" />';
 					print '<tr'.(($odd = !$odd)?' class="tr_alt"':'').'>'; // alternate row colors on table rows
-					print '<td><input type="text" name="remote_file" value="'.$row->remote_file.'"></td>';
-					print '<td><input type="text" name="local_file" value="'.$row->local_file.'"></td>';
-					print '<td><input type="checkbox" name="delete[]" value="'.$row->id.'"></td>';
+					print '<td>'.$row->local_file.'</td>';
+					print '<td><input type="text" name="new_names[]" value="'.$row->remote_file.'" /></td>';
+					print '<td><input type="checkbox" name="delete[]" value="'.$row->local_file.'"></td>';
 					print '</tr>';
 				}
 				print '<tr class="tr_footer">';
 				print '<td colspan="3"><input type="submit" value="Submit"></td>';
 				print '</tr>';
 				print '</table>';
-				echo '</form>';
+				print '</form>';
 			}
 			else
 			{
 				//no files with this module
-				echo "No files associated with this module";
+				print 'No files associated with this module';
 			}
 			$attributes = array('id' => 'addFiles', 'class' => 'inline');
 			echo form_open('module/editModule', $attributes);
@@ -72,7 +89,7 @@
 			else
 			{
 				//no commands with this module
-				echo "No commands associated with this module<br>";
+				print 'No commands associated with this module<br />';
 			}
 
 			$attributes = array('id' => 'addCommands', 'class' => 'inline');

@@ -68,6 +68,7 @@ class Modules_model extends CI_Model
 				'module_version' => '0'
 			);
 			$moduleInsert = $this->db->insert('modules', $newModuleInsert);
+			mkdir("./modules/$module_name", 0755);
 			return $moduleInsert;
 		}
 
@@ -75,6 +76,7 @@ class Modules_model extends CI_Model
 		{
 			// delete a module
 			$this->db->delete('modules', array('module_name' => $module_name));
+			rmdir("./modules/$module_name");
 			return true;
 		}
 
@@ -83,6 +85,7 @@ class Modules_model extends CI_Model
 			// rename a module
 			$this->db->where('module_name', $old_module);
 			$this->db->update('modules', array('module_name' => $new_module));
+			rename("./modules/$old_module","./modules/$new_module");
 			return true;
 		}
 
@@ -90,6 +93,10 @@ class Modules_model extends CI_Model
 		{
 			// clone a module
 			$this->addModule($new_module);
+
+			// Copy the directory structure and files
+			copy("./modules/$old_module","./modules/$new_module");
+
 			// Get Files from the old module and insert them under new module
 			$new_files = $this->getModuleFiles($old_module);
 			foreach ($new_files as $file)
@@ -150,15 +157,45 @@ class Modules_model extends CI_Model
 		function addFile($module_name, $remote_file, $local_file)
 		{
 			// adds a file to a moudule
-			//TODO
+			$newFileInsert = array(
+				'module_name' => $module_name,
+				'remote_file' => $remote_file,
+				'local_file' => $local_file
+			);
+
+			$fileInsert = $this->db->insert('module_files', $newFileInsert);
+			$this->updateModuleVersion($module_name);
+			return $fileInsert;
+		}
+
+		function removeFile($module_name, $local_file)
+		{
+			// removes a file from a moudule
+			if (unlink("$local_file"))
+			{
+				// if the deletion is succesful remove from database
+				$this->db->where('module_name', $module_name);
+				$this->db->where('local_file', $local_file);
+				$this->db->delete('module_files');
+				return true;
+			}
+			return false;
+		}
+
+		function renameFile($module_name, $old_file, $new_file)
+		{
+			// rename a file in a module
+			$this->db->where('module_name', $module_name);
+			$this->db->where('remote_file', $old_file);
+			$this->db->update('module_files', array('remote_file' => $new_file));
 			return true;
 		}
 
 		function getModuleFiles($module_name)
 		{
 			// get the files associated with a module
-			//TODO
-			return true;
+			$query = $this->db->get_where('module_files', array('module_name' => $module_name));
+			return $query->result();
 		}
 
 		function getModuleCommands($module_name)

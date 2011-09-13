@@ -16,7 +16,7 @@
 		<div class='container'>
 			<div id='statusBar'>
 				<div id="search">
-					<form method="post" action="<?php echo site_url('search'); //TODO?>">
+					<form method="post" action="<?php echo site_url('search');?>">
 						<label for="search_term">Search: </label>
 						<input type="text" size="50" name="search_term" />
 						<input type="submit" value="Search">

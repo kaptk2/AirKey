@@ -88,6 +88,22 @@ class Heartbeat_model extends CI_Model
 		return true;
 	}
 
+	function emailStatus()
+	{
+		// Gets the data to be emailed in case of network trouble.
+		$time_stamp = strtotime("2 minutes ago");
+
+		/* Select the MAC's of the AP's that have not contacted the server
+		// in the past 2mins and have not been ignored */
+		$this->db->select('mac');
+		$this->db->where('time_stamp <', $time_stamp);
+		$this->db->where('time_stamp !=', 'NEW');
+		$this->db->where_not_in('alarm_status', array('Ignore', 'Acknowledged'));
+		$query = $this->db->get('heartbeat');
+
+		return $query->num_rows();
+	}
+
 	function showLog()
 	{
 		$this->db->order_by("time_stamp", "desc");

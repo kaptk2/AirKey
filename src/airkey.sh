@@ -59,8 +59,8 @@ case "$1" in
               # Run any commands if listed
               if [ -n "$var_run" ]
                 then
-                  $var_run
                   curl -k -L -s $CONTROLLER/register/auth/$var_mac/$var_key/removeCommand
+                  $var_run
               fi
               # Check Version and decide what to do next
               if [ $var_version \< $var_server_version ]

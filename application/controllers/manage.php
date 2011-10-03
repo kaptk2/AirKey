@@ -36,16 +36,26 @@
 			{
 				$this->load->model('ap_model');
 
-				foreach ($this->input->post('approve') as $mac) //Activate the AP in the database
+				$approve = $this->input->post('approve');
+				$delete = $this->input->post('delete');
+
+
+				if (!empty($approve))
 				{
-					$mac = $this->security->xss_clean($mac);
-					$this->ap_model->activateAP($mac);
+					foreach ($approve as $mac) //Activate the AP in the database
+					{
+						$mac = $this->security->xss_clean($mac);
+						$this->ap_model->activateAP($mac);
+					}
 				}
 
-				foreach ($this->input->post('delete') as $mac) //Delete the AP in the database
+				if(!empty($delete))
 				{
-					$mac = $this->security->xss_clean($mac);
-					$this->ap_model->deleteAP($mac);
+					foreach ($delete as $mac) //Delete the AP in the database
+					{
+						$mac = $this->security->xss_clean($mac);
+						$this->ap_model->deleteAP($mac);
+					}
 				}
 			}
 			redirect('manage');

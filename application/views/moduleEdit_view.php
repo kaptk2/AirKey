@@ -19,7 +19,8 @@
 
 	<div id='contentLeft'>
 		<?php
-			echo form_open_multipart('module/upload/'.$module_name);?>
+			echo form_open_multipart('module/upload');?>
+			<input type='hidden' name='module_name' value='<?php echo $module_name; ?>' />
 			<fieldset>
 					<legend>Upload Files</legend>
 					<label for="userfile">File Name:</label>

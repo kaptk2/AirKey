@@ -14,7 +14,7 @@
 		{
 			if ($mac && $key)
 			{
-				$this->load->library('Validate');
+				$this->load->library(array('validate','encrypt'));
 				$this->load->helper('file');
 
 				$validUser = $this->validate->validateUser($mac, $key);
@@ -32,25 +32,11 @@
 						// Get the data to build the configuration file
 						$data['config'] = $this->config_model->getMainConfig($mac);
 
-						//$this->load->view('mainConfig_view', $data);
+						//$this->load->view('mainConfig_view', $data); // DEBUG Plain Text view
 
 						$encrypt = $this->load->view('mainConfig_view', $data, TRUE);
-						$password = $this->config->item('networkPassword'); // Get password from config file
 
-						$path = "./static/tmp/$mac";
-						if (write_file($path, $encrypt))
-						{
-							// encrypt the file and delete the unencrypted version
-							system("./static/scripts/encode.sh $password $path");
-							// DELETE the file
-							unlink($path);
-						}
-						else
-						{
-							// File can't be written
-							$data['error_msg'] = "File can not be written";
-							$this->load->view('error_view', $data);
-						}
+						echo $this->encrypt->ssl_encode($encrypt);
 					}
 					else
 					{

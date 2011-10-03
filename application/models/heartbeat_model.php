@@ -40,7 +40,8 @@ class Heartbeat_model extends CI_Model
 			* the past 2 minutes and set the alarm_status of those AP's to
 			* "Alarm"
 			*/
-			$time_stamp = strtotime("2 minutes ago");
+			$checkin_time = $this->config->item('checkin_time');
+			$time_stamp = strtotime("$checkin_time minutes ago");
 
 			/* Select the MAC's of the AP's that have not contacted the server
 			// in the past 2mins and have not been ignored */

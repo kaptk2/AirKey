@@ -18,6 +18,8 @@ class Register extends CI_Controller
 		{
 			//Get AP Credentials from database
 			$this->load->model('ap_model');
+			$this->load->model('config_model');
+
 			$validMAC = $this->ap_model->validateMAC($mac);
 
 			if($validMAC) //Check to make sure something is returned
@@ -45,6 +47,12 @@ class Register extends CI_Controller
 							'mac' => $mac,
 							'time_stamp' => $time_stamp
 						);
+					}
+
+					if ($version == 'removeCommand')
+					{
+						// if the AP says we should remove command do it.
+						$this->config_model->removeCommand($mac);
 					}
 
 					$this->load->model('heartbeat_model');

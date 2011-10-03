@@ -170,8 +170,10 @@ class Modules_model extends CI_Model
 
 		function removeFile($module_name, $local_file)
 		{
+			// Build File Location on Disk
+			$file_name = "./modules/".$module_name."/".$local_file;
 			// removes a file from a moudule
-			if (unlink("$local_file"))
+			if (unlink("$file_name"))
 			{
 				// if the deletion is succesful remove from database
 				$this->db->where('module_name', $module_name);
@@ -222,8 +224,10 @@ class Modules_model extends CI_Model
 			$this->db->join('module_commands', 'modules.module_name = module_commands.module_name', 'left');
 			// get the files associated with the module
 			$this->db->join('module_files', 'modules.module_name = module_files.module_name', 'left');
+			// get the packages associate with the module
+			$this->db->join('module_packages', 'modules.module_name = module_packages.module_name', 'left');
 			$query = $this->db->get();
-			return $query->result();
+			return $query->result_array();
 		}
 	}
 ?>

@@ -14,6 +14,12 @@ DIRECTORY="/etc/airkey" #No trailing slash
 # Posted Variables
 local_uptime=`cut -f1 -d' ' /proc/uptime`
 
+# Modules File to post
+if [ ! -e "$DIRECTORY/modules.txt" ] # Make sure modules.txt exists
+then
+	touch $DIRECTORY/modules.txt
+fi
+
 case "$1" in
 				init)
 					# Create the configuration file
@@ -52,7 +58,7 @@ case "$1" in
 					if [ -e "$DIRECTORY/config.txt" ]
 						then
 							source $DIRECTORY/config.txt
-							curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime&ap_version=$var_version" $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
+							curl -k -L -s -o /tmp/encrypted -d "uptime=$local_uptime&ap_version=$var_version" -d @$DIRECTORY/modules.txt $CONTROLLER/register/auth/$var_mac/$var_key/$var_version
 							openssl aes-256-cbc -a -d -salt -kfile $DIRECTORY/network.key -in /tmp/encrypted -out /tmp/checkin
 							rm -f /tmp/encrypted
 							source /tmp/checkin
@@ -62,6 +68,7 @@ case "$1" in
 									curl -k -L -s $CONTROLLER/register/auth/$var_mac/$var_key/removeCommand
 									$var_run
 							fi
+
 							# Check Version and decide what to do next
 							if [ $var_version \< $var_server_version ]
 								then # Newer version found
@@ -71,7 +78,17 @@ case "$1" in
 									# Get module config file
 									curl -k -s -o /tmp/$module $CONTROLLER/module/buildModule/$module/$var_mac/$var_key
 									source /tmp/$module # Use the variables provided in the module defination file
+									# Find out if a new module
+									if grep -q $module $DIRECTORY/modules.txt
+									then
+										# Update the version number
+										sed -i 's/module\["$module_name"\]\[.*\]/module["$module_name"]["$module_version"]/g' $DIRECTORY/modules.txt
+									else
+										# Add module name and version to modules.txt
+										echo "module[$module_name][$module_version]" >> $DIRECTORY/modules.txt
+									fi
 
+									#TODO make this multivariable
 									if [ -n "$var_package" ] #If the package variable exists make sure it is installed
 										then
 											/bin/opkg list-installed |awk '{print $1}' > /tmp/installed # Build list of pkgs
@@ -82,11 +99,8 @@ case "$1" in
 													/bin/opkg update # Package not installed, so install it
 													/bin/opkg install $var_package
 										fi
-
-										if [ -e "/tmp/installed" ]
-											then rm -f /tmp/installed # Clean up installed package list
-										fi
 									fi
+									# End package install
 
 									if [ -n "$var_remote_files" ] # If the files variable exists get all files
 										i=1
@@ -100,7 +114,9 @@ case "$1" in
 											i=`expr $i + 1`
 											done
 									fi
+									# End of remote files
 
+									# TODO make this multivariable
 									if [ -n "$var_command" ] #If there are commands run then run them
 										then $var_command
 									fi

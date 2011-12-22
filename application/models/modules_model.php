@@ -214,20 +214,17 @@ class Modules_model extends CI_Model
 			return $query->result();
 		}
 
-		function buildModule($module_name)
+		function getModuleVersion($module_name)
 		{
-			// function to build a module file
-			$this->db->select('*');
-			$this->db->from('modules');
-			$this->db->where('modules.module_name', $module_name);
-			// get the commands and packages assocated with the module
-			$this->db->join('module_commands', 'modules.module_name = module_commands.module_name', 'left');
-			// get the files associated with the module
-			$this->db->join('module_files', 'modules.module_name = module_files.module_name', 'left');
-			// get the packages associate with the module
-			$this->db->join('module_packages', 'modules.module_name = module_packages.module_name', 'left');
-			$query = $this->db->get();
-			return $query->result_array();
+			// Gets the version number of a module
+			$this->db->select('module_version');
+			$query = $this->db->get_where('modules', array('module_name' => $module_name));
+			if ($query->num_rows() > 0)
+			{
+				 $row = $query->row();
+				 return $row->module_version;
+			}
+			return false; //Not a valid module name
 		}
 	}
 ?>

@@ -29,6 +29,16 @@ body {background: #a3a3a3;}
 	background:#6b9ada;
 }
 
+#search {
+	float: left;
+}
+
+#logout {
+	float: right;
+	margin-right: 50px;
+	margin-top: 5px;
+}
+
 #navigationBar { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
 #content { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
 

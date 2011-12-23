@@ -1,6 +1,18 @@
 <?php
 	class Manage extends CI_Controller
 	{
+		public function __construct()
+		{
+			session_start();
+			parent::__construct();
+            // Require a valid user to access this page
+            if ( !isset($_SESSION['username']) )
+            {
+				redirect('admin');
+			}
+
+		}
+
 		function index($page_num = 0)
 		{
 			$this->load->model('ap_model');

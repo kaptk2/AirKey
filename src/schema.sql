@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS module_commands;
 DROP TABLE IF EXISTS module_packages;
 DROP TABLE IF EXISTS modules;
 DROP TABLE IF EXISTS ap;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE ap (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
@@ -89,3 +90,15 @@ CREATE TABLE loads (
 	FOREIGN KEY (group_name) REFERENCES ap_groups(group_name) ON DELETE CASCADE,
 	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE users (
+        id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	first_name VARCHAR(55),
+	last_name VARCHAR(55),
+	email VARCHAR(128) NOT NULL,
+	password VARCHAR(128) NOT NULL,
+	date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        user_description TEXT
+) ENGINE=InnoDB;
+# Add default admin user to the table
+INSERT INTO users (first_name, last_name, email, password, user_description) VALUES('Admin', 'User', 'airkey@rimrockhosting.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default administator user');

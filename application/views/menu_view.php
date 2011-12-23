@@ -22,6 +22,11 @@
 						<input type="submit" value="Search">
 					</form>
 				</div>
+				<div id="logout">
+					<form method="link" action="<?php echo site_url('admin/logout');?>">
+						<input type="submit" value="Logout" />
+					</form>
+				</div>
 			</div>
 		</div>
 		<div class='container'>

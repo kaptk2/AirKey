@@ -1,1 +1,0 @@
-v2.0.0 of The Authentication Library is incompatible with older versions of the software. DO NOT upgrade older installations of this library, as the salt function has been updated and will break your auth if you use it!

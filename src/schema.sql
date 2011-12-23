@@ -24,13 +24,13 @@ CREATE TABLE ap_groups (
 	group_description TEXT
 ) ENGINE=InnoDB;
 # Add default group and description
-INSERT INTO ap_groups (group_name, group_description) VALUES('default', 'default group');
+INSERT INTO groups (group_name, group_description) VALUES('default', 'default group');
 
 CREATE TABLE associates (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	group_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE,
-	FOREIGN KEY (group_name) REFERENCES ap_groups(group_name) ON DELETE CASCADE
+	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE administrator (
@@ -45,7 +45,6 @@ CREATE TABLE heartbeat (
 	uptime CHAR(10),
 	ap_version VARCHAR(255),
 	time_stamp VARCHAR(20),
-	alarm_status VARCHAR(255),
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -86,53 +85,6 @@ CREATE TABLE configuration (
 CREATE TABLE loads (
 	group_name VARCHAR(255) NOT NULL,
 	module_name VARCHAR(255) NOT NULL,
-	FOREIGN KEY (group_name) REFERENCES ap_groups(group_name) ON DELETE CASCADE,
+	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE,
 	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
-
--- ----------------------------------- --
--- Added to support logins to the administrative
--- interface. These tables are from the Auth Spark
--- See: https://github.com/adamgriffiths/ag-auth/
-
---
--- Table structure for table `ci_sessions`
--- Keep session data in the database
---
-
-CREATE TABLE IF NOT EXISTS `ci_sessions` (
-  `session_id` varchar(40) NOT NULL default '0',
-  `ip_address` varchar(16) NOT NULL default '0',
-  `user_agent` varchar(50) NOT NULL,
-  `last_activity` int(10) unsigned NOT NULL default '0',
-  `user_data` text NOT NULL,
-  PRIMARY KEY  (`session_id`)
-) ENGINE=InnoDB;
-
---
--- Table structure for table `groups`
--- Administrator Groups
---
-
-CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int(11) NOT NULL,
-  `title` varchar(20) NOT NULL default '',
-  `description` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB;
-
---
--- Table structure for table `users`
--- Administrator Users
---
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL auto_increment,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `group_id` int(11) NOT NULL default '100',
-  `token` varchar(255) NOT NULL,
-  `identifier` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3;

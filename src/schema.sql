@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS loads;
 DROP TABLE IF EXISTS configuration;
 DROP TABLE IF EXISTS heartbeat;
 DROP TABLE IF EXISTS associates;
-DROP TABLE IF EXISTS groups;
+DROP TABLE IF EXISTS ap_groups;
 DROP TABLE IF EXISTS administrator;
 DROP TABLE IF EXISTS module_files;
 DROP TABLE IF EXISTS module_commands;
@@ -19,7 +19,7 @@ CREATE TABLE ap (
 	location TEXT
 ) ENGINE=InnoDB;
 
-CREATE TABLE groups (
+CREATE TABLE ap_groups (
 	group_name VARCHAR(255) NOT NULL PRIMARY KEY,
 	group_description TEXT
 ) ENGINE=InnoDB;

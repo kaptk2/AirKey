@@ -24,13 +24,13 @@ CREATE TABLE ap_groups (
 	group_description TEXT
 ) ENGINE=InnoDB;
 # Add default group and description
-INSERT INTO groups (group_name, group_description) VALUES('default', 'default group');
+INSERT INTO ap_groups (group_name, group_description) VALUES('default', 'default group');
 
 CREATE TABLE associates (
 	mac CHAR(12) NOT NULL PRIMARY KEY,
 	group_name VARCHAR(255) NOT NULL,
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE,
-	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE
+	FOREIGN KEY (group_name) REFERENCES ap_groups(group_name) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE administrator (
@@ -45,6 +45,7 @@ CREATE TABLE heartbeat (
 	uptime CHAR(10),
 	ap_version VARCHAR(255),
 	time_stamp VARCHAR(20),
+	alarm_status VARCHAR(255),
 	FOREIGN KEY (mac) REFERENCES ap(mac) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
@@ -85,6 +86,6 @@ CREATE TABLE configuration (
 CREATE TABLE loads (
 	group_name VARCHAR(255) NOT NULL,
 	module_name VARCHAR(255) NOT NULL,
-	FOREIGN KEY (group_name) REFERENCES groups(group_name) ON DELETE CASCADE,
+	FOREIGN KEY (group_name) REFERENCES ap_groups(group_name) ON DELETE CASCADE,
 	FOREIGN KEY (module_name) REFERENCES modules(module_name) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

@@ -1,6 +1,6 @@
 <?php $this->load->helper('form'); ?>
 <div class='container'>
-	<div class='content'>
+	<div id='mainContent'>
 		<h3>Current Issues</h3>
 		<?php echo form_open('status/currentIssues'); ?>
 			<table>

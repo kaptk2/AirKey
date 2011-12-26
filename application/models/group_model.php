@@ -3,7 +3,7 @@
 	{
 		function showGroups()
 		{
-			$query = $this->db->get('groups');
+			$query = $this->db->get('ap_groups');
 			return $query->result();
 		}
 
@@ -18,7 +18,7 @@
 			// delete the group from the database
 			if ($group_name != 'default') //Default group not allowed to be removed
 			{
-				$this->db->delete('groups', array('group_name' => $group_name));
+				$this->db->delete('ap_groups', array('group_name' => $group_name));
 			}
 		}
 
@@ -29,7 +29,7 @@
 				'group_description' => $group_desc
 			);
 
-			$groupInsert = $this->db->insert('groups', $newGroupInsert);
+			$groupInsert = $this->db->insert('ap_groups', $newGroupInsert);
 			return $groupInsert;
 		}
 
@@ -41,7 +41,7 @@
 			);
 
 			$this->db->where('group_name', $group_name);
-			$groupUpdate = $this->db->update('groups', $newGroupUpdate);
+			$groupUpdate = $this->db->update('ap_groups', $newGroupUpdate);
 			return $groupUpdate;
 		}
 
@@ -66,7 +66,7 @@
 
 		function getGroupDescription($group_name)
 		{
-			$query = $this->db->get_where('groups', array('group_name' => $group_name));
+			$query = $this->db->get_where('ap_groups', array('group_name' => $group_name));
 			return $query->row();
 		}
 
@@ -74,7 +74,7 @@
 		{
 			$this->db->like('group_name', $search_term);
 
-			$search = $this->db->get('groups');
+			$search = $this->db->get('ap_groups');
 			return $search->result();
 		}
 	}

@@ -1,6 +1,6 @@
 <?php $this->load->helper('form'); ?>
 <div class='container'>
-	<div class='content'>
+	<div id='mainContent'>
 		<?php
 			$attributes = array('id' => 'selectModule', 'class' => 'inline');
 			echo form_open('module/index', $attributes);

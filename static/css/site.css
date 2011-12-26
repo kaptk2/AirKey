@@ -39,8 +39,17 @@ body {background: #a3a3a3;}
 	margin-top: 5px;
 }
 
-#navigationBar { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
-#content { float: left; margin-right: 10px; margin-right: 0; width: 950px; margin: 0; }
+#navigationBar {
+	float: left;
+	width: 950px;
+	margin: 0;
+}
+
+#mainContent {
+	float: left;
+	width: 930px;
+	margin: 10px;
+}
 
 #contentLeft {
 	float: left;

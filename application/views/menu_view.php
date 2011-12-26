@@ -39,6 +39,7 @@
 					$group = ($page_name === 'group'?"selected":"");
 					$modules = ($page_name === 'module'?"selected":"");
 					$status = ($page_name === 'status'?"selected":"");
+					$users = ($page_name === 'users'?"selected":"");
 				?>
 				<li>
 					<a href="<?php echo site_url('manage'); ?>" class="<?php echo $manage; ?>">Dashboard</a>
@@ -51,6 +52,9 @@
 				</li>
 				<li>
 					<a href="<?php echo site_url('status'); ?>" class="<?php echo $status; ?>">Status</a>
+				</li>
+				<li>
+					<a href="<?php echo site_url('admin/manage_users'); ?>" class="<?php echo $users; ?>">Users</a>
 				</li>
 			</ul>
 			</div>

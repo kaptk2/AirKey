@@ -54,7 +54,7 @@
 					<a href="<?php echo site_url('status'); ?>" class="<?php echo $status; ?>">Status</a>
 				</li>
 				<li>
-					<a href="<?php echo site_url('admin/manage_users'); ?>" class="<?php echo $users; ?>">Users</a>
+					<a href="<?php echo site_url('admin/manageUsers'); ?>" class="<?php echo $users; ?>">Users</a>
 				</li>
 			</ul>
 			</div>

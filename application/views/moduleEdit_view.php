@@ -48,7 +48,7 @@
 				{
 					print '<input type="hidden" name="orig_names[]" value="'.$row->remote_file.'" />';
 					print '<tr'.(($odd = !$odd)?' class="tr_alt"':'').'>'; // alternate row colors on table rows
-					print '<td>'.$row->local_file.'</td>';
+					print '<td><a href="/module/editFile/'.$module_name.'/'.$row->local_file.'">'.$row->local_file.'</a></td>';
 					print '<td><input type="text" name="new_names[]" value="'.$row->remote_file.'" /></td>';
 					print '<td><input type="checkbox" name="delete[]" value="'.$row->local_file.'"></td>';
 					print '</tr>';

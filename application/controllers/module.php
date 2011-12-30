@@ -73,6 +73,33 @@
 			}
 		}
 
+		function editFile($moduleName, $fileName)
+		{
+			$this->load->helper('file');
+
+			// Check to see if data has been posted
+			if ($_POST)
+			{
+				// Write the contents of the textbox to the file
+				$contents = $this->input->post('contents');
+
+				if (write_file("./modules/$moduleName/$fileName", $contents))
+					redirect ("module/moduleEdit/$moduleName");
+				else // Could not write file disply error
+				{
+					$data['error_msg'] = "Can't write file, please check permissions<br />";
+					$this->load->view('error_view', $data);
+				}
+			}
+			else // No data posted so show the editor view
+			{
+				$this->load->helper('form');
+				// Pass contents of file into a view
+				$data['contents'] = read_file("./modules/$moduleName/$fileName");
+				$this->load->view('fileEdit_view', $data);
+			}
+		}
+
 		function createModule()
 		{
 			$this->load->model('modules_model');

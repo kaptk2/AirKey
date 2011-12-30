@@ -16,7 +16,7 @@
 	</form>
 	<?php
 		$attributes = array('id' => 'editAP');
-		echo form_open('manage/editAP', $attributes);
+		echo form_open('manage/editAP/'.$mac, $attributes);
 	?>
 		<fieldset>
 			<legend>Edit AP infomation</legend>

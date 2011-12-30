@@ -28,15 +28,51 @@
  */
 class CI_Input {
 
+	/**
+	 * IP address of the current user
+	 *
+	 * @var string
+	 */
 	var $ip_address				= FALSE;
+	/**
+	 * user agent (web browser) being used by the current user
+	 *
+	 * @var string
+	 */
 	var $user_agent				= FALSE;
+	/**
+	 * If FALSE, then $_GET will be set to an empty array
+	 *
+	 * @var bool
+	 */
 	var $_allow_get_array		= TRUE;
+	/**
+	 * If TRUE, then newlines are standardized
+	 *
+	 * @var bool
+	 */
 	var $_standardize_newlines	= TRUE;
-	var $_enable_xss			= FALSE; // Set automatically based on config setting
-	var $_enable_csrf			= FALSE; // Set automatically based on config setting
-
+	/**
+	 * Determines whether the XSS filter is always active when GET, POST or COOKIE data is encountered
+	 * Set automatically based on config setting
+	 *
+	 * @var bool
+	 */
+	var $_enable_xss			= FALSE;
+	/**
+	 * Enables a CSRF cookie token to be set.
+	 * Set automatically based on config setting
+	 *
+	 * @var bool
+	 */
+	var $_enable_csrf			= FALSE;
+	/**
+	 * List of all HTTP request headers
+	 *
+	 * @var array
+	 */
 	protected $headers			= array();
-	
+
 
 	/**
 	 * Constructor
@@ -53,11 +89,8 @@ class CI_Input {
 		$this->_enable_xss		= (config_item('global_xss_filtering') === TRUE);
 		$this->_enable_csrf		= (config_item('csrf_protection') === TRUE);
 
-		// Do we need to load the security class?
-		if ($this->_enable_xss == TRUE OR $this->_enable_csrf == TRUE)
-		{
-			$this->security =& load_class('Security');
-		}
+		global $SEC;
+		$this->security =& $SEC;
 
 		// Do we need the UTF-8 class?
 		if (UTF8_ENABLED === TRUE)
@@ -92,8 +125,7 @@ class CI_Input {
 
 		if ($xss_clean === TRUE)
 		{
-			$_security =& load_class('Security');
-			return $_security->xss_clean($array[$index]);
+			return $this->security->xss_clean($array[$index]);
 		}
 
 		return $array[$index];
@@ -109,8 +141,21 @@ class CI_Input {
 	* @param	bool
 	* @return	string
 	*/
-	function get($index = '', $xss_clean = FALSE)
+	function get($index = NULL, $xss_clean = FALSE)
 	{
+		// Check if a field has been provided
+		if ($index === NULL AND ! empty($_GET))
+		{
+			$get = array();
+
+			// loop through the full _GET array
+			foreach (array_keys($_GET) as $key)
+			{
+				$get[$key] = $this->_fetch_from_array($_GET, $key, $xss_clean);
+			}
+			return $get;
+		}
+
 		return $this->_fetch_from_array($_GET, $index, $xss_clean);
 	}
 
@@ -124,8 +169,21 @@ class CI_Input {
 	* @param	bool
 	* @return	string
 	*/
-	function post($index = '', $xss_clean = FALSE)
+	function post($index = NULL, $xss_clean = FALSE)
 	{
+		// Check if a field has been provided
+		if ($index === NULL AND ! empty($_POST))
+		{
+			$post = array();
+
+			// Loop through the full _POST array and return it
+			foreach (array_keys($_POST) as $key)
+			{
+				$post[$key] = $this->_fetch_from_array($_POST, $key, $xss_clean);
+			}
+			return $post;
+		}
+
 		return $this->_fetch_from_array($_POST, $index, $xss_clean);
 	}
 
@@ -182,13 +240,15 @@ class CI_Input {
 	* @param	string	the cookie domain.  Usually:  .yourdomain.com
 	* @param	string	the cookie path
 	* @param	string	the cookie prefix
+	* @param	bool	true makes the cookie secure
 	* @return	void
 	*/
-	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '')
+	function set_cookie($name = '', $value = '', $expire = '', $domain = '', $path = '/', $prefix = '', $secure = FALSE)
 	{
 		if (is_array($name))
 		{
-			foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'name') as $item)
+			// always leave 'name' in last place, as the loop will break otherwise, due to $$item
+			foreach (array('value', 'expire', 'domain', 'path', 'prefix', 'secure', 'name') as $item)
 			{
 				if (isset($name[$item]))
 				{
@@ -209,6 +269,10 @@ class CI_Input {
 		{
 			$path = config_item('cookie_path');
 		}
+		if ($secure == FALSE AND config_item('cookie_secure') != FALSE)
+		{
+			$secure = config_item('cookie_secure');
+		}
 
 		if ( ! is_numeric($expire))
 		{
@@ -219,7 +283,7 @@ class CI_Input {
 			$expire = ($expire > 0) ? time() + $expire : 0;
 		}
 
-		setcookie($prefix.$name, $value, $expire, $path, $domain, 0);
+		setcookie($prefix.$name, $value, $expire, $path, $domain, $secure);
 	}
 
 	// --------------------------------------------------------------------
@@ -374,9 +438,9 @@ class CI_Input {
 	function _sanitize_globals()
 	{
 		// It would be "wrong" to unset any of these GLOBALS.
-		$protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', 
+		$protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST',
 							'_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
-							'system_folder', 'application_folder', 'BM', 'EXT', 
+							'system_folder', 'application_folder', 'BM', 'EXT',
 							'CFG', 'URI', 'RTR', 'OUT', 'IN');
 
 		// Unset globals for securiy.
@@ -413,7 +477,7 @@ class CI_Input {
 		{
 			if (is_array($_GET) AND count($_GET) > 0)
 			{
-				foreach($_GET as $key => $val)
+				foreach ($_GET as $key => $val)
 				{
 					$_GET[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
 				}
@@ -423,7 +487,7 @@ class CI_Input {
 		// Clean $_POST Data
 		if (is_array($_POST) AND count($_POST) > 0)
 		{
-			foreach($_POST as $key => $val)
+			foreach ($_POST as $key => $val)
 			{
 				$_POST[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
 			}
@@ -441,7 +505,7 @@ class CI_Input {
 			unset($_COOKIE['$Path']);
 			unset($_COOKIE['$Domain']);
 
-			foreach($_COOKIE as $key => $val)
+			foreach ($_COOKIE as $key => $val)
 			{
 				$_COOKIE[$this->_clean_input_keys($key)] = $this->_clean_input_data($val);
 			}
@@ -484,8 +548,12 @@ class CI_Input {
 			return $new_array;
 		}
 
-		// We strip slashes if magic quotes is on to keep things consistent
-		if (function_exists('get_magic_quotes_gpc') AND get_magic_quotes_gpc())
+		/* We strip slashes if magic quotes is on to keep things consistent
+
+		   NOTE: In PHP 5.4 get_magic_quotes_gpc() will always return 0 and
+			 it will probably not exist in future versions at all.
+		*/
+		if ( ! is_php('5.4') && get_magic_quotes_gpc())
 		{
 			$str = stripslashes($str);
 		}
@@ -495,6 +563,9 @@ class CI_Input {
 		{
 			$str = $this->uni->clean_string($str);
 		}
+
+		// Remove control characters
+		$str = remove_invisible_characters($str);
 
 		// Should we filter the input data?
 		if ($this->_enable_xss === TRUE)
@@ -507,7 +578,7 @@ class CI_Input {
 		{
 			if (strpos($str, "\r") !== FALSE)
 			{
-				$str = str_replace(array("\r\n", "\r"), PHP_EOL, $str);
+				$str = str_replace(array("\r\n", "\r", "\r\n\n"), PHP_EOL, $str);
 			}
 		}
 
@@ -548,8 +619,10 @@ class CI_Input {
 	/**
 	 * Request Headers
 	 *
-	 * In Apache, you can simply call apache_request_headers(), however for 
+	 * In Apache, you can simply call apache_request_headers(), however for
 	 * people running other webservers the function is undefined.
+	 *
+	 * @param	bool XSS cleaning
 	 *
 	 * @return array
 	 */
@@ -578,10 +651,10 @@ class CI_Input {
 		{
 			$key = str_replace('_', ' ', strtolower($key));
 			$key = str_replace(' ', '-', ucwords($key));
-			
+
 			$this->headers[$key] = $val;
 		}
-		
+
 		return $this->headers;
 	}
 
@@ -602,7 +675,7 @@ class CI_Input {
 		{
 			$this->request_headers();
 		}
-		
+
 		if ( ! isset($this->headers[$index]))
 		{
 			return FALSE;
@@ -610,11 +683,10 @@ class CI_Input {
 
 		if ($xss_clean === TRUE)
 		{
-			$_security =& load_class('Security');
-			return $_security->xss_clean($this->headers[$index]);
+			return $this->security->xss_clean($this->headers[$index]);
 		}
 
-		return $this->headers[$index];		
+		return $this->headers[$index];
 	}
 
 	// --------------------------------------------------------------------
@@ -642,11 +714,10 @@ class CI_Input {
 	 */
 	public function is_cli_request()
 	{
-		return (bool) defined('STDIN');
+		return (php_sapi_name() == 'cli') or defined('STDIN');
 	}
 
 }
-// END Input class
 
 /* End of file Input.php */
 /* Location: ./system/core/Input.php */

@@ -67,26 +67,47 @@ class Modules_model extends CI_Model
 				'module_name' => $module_name,
 				'module_version' => '0'
 			);
-			$moduleInsert = $this->db->insert('modules', $newModuleInsert);
-			mkdir("./modules/$module_name", 0755);
-			return $moduleInsert;
+			if (mkdir("./modules/$module_name", 0755))
+			{
+				$moduleInsert = $this->db->insert('modules', $newModuleInsert);
+				return true;
+			}
+			die("Can't create a directory check permissions");
 		}
 
 		function deleteModule($module_name)
 		{
 			// delete a module
-			$this->db->delete('modules', array('module_name' => $module_name));
-			rmdir("./modules/$module_name");
-			return true;
+			if (rmdir("./modules/$module_name"))
+			{
+				$this->db->delete('modules',
+					array('module_name' => $module_name));
+				return true;
+			}
+			// No files were found with this module
+			// Delete it from the database and throw error
+			$this->db->delete('modules',
+					array('module_name' => $module_name));
+			$data = "Only removed from database, the files could not be removed <br />";
+			$data .= "This may be because the file does not exist or the webserver";
+			$data .= " does not have permission to delete these files.<br />";
+			$data .= "The directory we tried to delete is: ".getcwd()."/modules/$module_name";
+			die($data);
 		}
 
 		function renameModule($old_module, $new_module)
 		{
 			// rename a module
-			$this->db->where('module_name', $old_module);
-			$this->db->update('modules', array('module_name' => $new_module));
-			rename("./modules/$old_module","./modules/$new_module");
-			return true;
+			if (rename("./modules/$old_module","./modules/$new_module"))
+			{
+				$this->db->where('module_name', $old_module);
+				$this->db->update('modules',
+					array('module_name' => $new_module));
+				return true;
+			}
+			$data = "Can't rename file, check permissions <br />";
+			$data .= "The directory we tried to rename is: ".getcwd()."/modules/$new_module";
+			die($data);
 		}
 
 		function cloneModule($old_module, $new_module)
@@ -95,27 +116,31 @@ class Modules_model extends CI_Model
 			$this->addModule($new_module);
 
 			// Copy the directory structure and files
-			copy("./modules/$old_module","./modules/$new_module");
-
-			// Get Files from the old module and insert them under new module
-			$new_files = $this->getModuleFiles($old_module);
-			foreach ($new_files as $file)
+			if (copy("./modules/$old_module","./modules/$new_module"))
 			{
-				$this->addFile($new_module, $file->local_file, $file->remote_file);
+				// Get Files from the old module and insert them under new module
+				$new_files = $this->getModuleFiles($old_module);
+				foreach ($new_files as $file)
+				{
+					$this->addFile($new_module, $file->local_file, $file->remote_file);
+				}
+				// Get commands from the old module and insert them under new module
+				$new_commands = $this->getModuleCommands($old_module);
+				foreach ($new_commands as $command)
+				{
+					$this->addCommand($new_module, $command->command);
+				}
+				// Get packages from the old module and insert them under new module
+				$new_packages = $this->getModulePackages($old_module);
+				foreach ($new_commands as $command)
+				{
+					$this->addCommand($new_module, $command->command);
+				}
+				return true;
 			}
-			// Get commands from the old module and insert them under new module
-			$new_commands = $this->getModuleCommands($old_module);
-			foreach ($new_commands as $command)
-			{
-				$this->addCommand($new_module, $command->command);
-			}
-			// Get packages from the old module and insert them under new module
-			$new_packages = $this->getModulePackages($old_module);
-			foreach ($new_commands as $command)
-			{
-				$this->addCommand($new_module, $command->command);
-			}
-			return true;
+			$data = "Can't add a new directory to clone to, check permissions";
+			$data .= "The directory we tried to add is: ".getcwd()."/modules/$new_module";
+			die($data);
 		}
 
 		function addCommand($module_name, $command)
@@ -181,7 +206,9 @@ class Modules_model extends CI_Model
 				$this->db->delete('module_files');
 				return true;
 			}
-			return false;
+			$data = "Unable to remove the file, check permissions";
+			$data .= "The file we tried to delete is: ".getcwd()."$file_name";
+			die ($data);
 		}
 
 		function renameFile($module_name, $old_file, $new_file)
